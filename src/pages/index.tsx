@@ -1,5 +1,9 @@
 import Layout from "components/common/Layout";
 import Personal from "components/personal";
+import PrimaryButton from "components/common/buttons/Primary";
+import SecondaryButton from "components/common/buttons/Secondary";
+import Experiences from "components/experiences";
+import About from "components/about";
 
 export default function Home() {
   return (
@@ -19,34 +23,16 @@ export default function Home() {
 
           <h1 className="my-5 text-2xl font-semibold">Abhilash Sharma</h1>
           <div className="flex gap-5">
-            <button>View</button>
-            <button>Share</button>
+            <PrimaryButton>View</PrimaryButton>
+            <SecondaryButton>Share</SecondaryButton>
           </div>
         </div>
       </header>
       <Layout>
         <div className="flex w-full max-w-7xl flex-wrap-reverse justify-between gap-5 lg:flex-nowrap">
           <div className="flex w-full flex-col gap-5 text-slate-900">
-            <section>
-              <h2 className="text-xl font-semibold capitalize">About me</h2>
-              <p className="mt-2 text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
-                laborum error, aliquam, culpa veniam dolorum placeat ab eum eos
-                qui dolores doloremque recusandae velit eveniet laudantium.
-                Iusto fuga tempora maxime.
-              </p>
-            </section>
-            <section>
-              <h2 className="text-xl font-semibold capitalize">
-                Work Experiences
-              </h2>
-              <p className="mt-2 text-lg">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
-                laborum error, aliquam, culpa veniam dolorum placeat ab eum eos
-                qui dolores doloremque recusandae velit eveniet laudantium.
-                Iusto fuga tempora maxime.
-              </p>
-            </section>
+            <About />
+            <Experiences />
           </div>
           <Personal />
         </div>
