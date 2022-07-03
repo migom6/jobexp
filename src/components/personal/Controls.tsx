@@ -2,12 +2,11 @@ import { PencilAltIcon } from "@heroicons/react/solid";
 import { EyeIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import { Modal } from "../common/modal";
+import EditPersonal from "./EditPersonal";
 
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
-  useEffect(() => {
-    console.log("mounted");
-  }, []);
+
   return (
     <>
       <div className="absolute right-5 top-5 flex gap-5">
@@ -19,7 +18,7 @@ const Controls = () => {
         </button>
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
-        <div className="h-40 w-40 bg-white">hello</div>
+        <EditPersonal />
       </Modal>
     </>
   );

@@ -4,7 +4,7 @@ const Experiences = () => {
       <h2 className="text-xl font-semibold capitalize">Work Experiences</h2>
       <ul className="mt-5 flex flex-col gap-6">
         <li className="flex gap-2 ">
-          <div className="flex flex-col justify-between text-sm">
+          <div className="flex flex-col justify-between text-center text-sm">
             <span>22 Oct 21</span>
             <span>23 Oct 22</span>
           </div>
@@ -26,7 +26,7 @@ const Experiences = () => {
           </div>
         </li>
         <li className="flex gap-2 ">
-          <div className="flex flex-col justify-between text-sm">
+          <div className="flex flex-col justify-between text-center text-sm">
             <span>22 Oct 21</span>
             <span>23 Oct 22</span>
           </div>
@@ -48,7 +48,7 @@ const Experiences = () => {
           </div>
         </li>
         <li className="flex gap-2 ">
-          <div className="flex flex-col justify-between text-sm">
+          <div className="flex flex-col justify-between text-center text-sm">
             <span>22 Oct 21</span>
             <span>23 Oct 22</span>
           </div>

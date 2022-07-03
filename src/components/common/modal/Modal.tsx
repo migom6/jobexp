@@ -43,7 +43,7 @@ const dropIn = {
     transition: {
       duration: 0.1,
       type: "spring",
-      damping: 25,
+      damping: 40,
       stiffness: 500,
     },
   },
@@ -70,7 +70,7 @@ const ModalBody: FC<{
     <Backdrop onClick={() => setOpen(false)}>
       <motion.div
         onClick={(e) => e.stopPropagation()}
-        className="z-50 m-auto"
+        className="z-50 "
         variants={dropIn}
         initial="hidden"
         animate="visible"

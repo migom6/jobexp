@@ -7,7 +7,7 @@ const Hero = () => {
       <div className="relative -top-12 flex flex-col items-center">
         <div className="h-[120px] w-[120px] overflow-hidden rounded-full border-4 border-white bg-red-500 drop-shadow-md" />
 
-        <h1 className="mt-5 text-2xl font-semibold">Abhilash Sharma</h1>
+        <h1 className="mt-5 text-2xl font-semibold">Madhurjya Pegu</h1>
         <h1 className="mb-5 text-xl font-semibold">@migom6</h1>
         <div className="flex gap-5">
           <PrimaryButton>View</PrimaryButton>
