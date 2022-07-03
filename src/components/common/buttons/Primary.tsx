@@ -8,7 +8,7 @@ interface Props
   children: ReactNode;
 }
 
-const Secondary: FC<Props> = ({ children, ...props }) => {
+const Primary: FC<Props> = ({ children, ...props }) => {
   return (
     <button
       {...props}
@@ -19,4 +19,4 @@ const Secondary: FC<Props> = ({ children, ...props }) => {
   );
 };
 
-export default Secondary;
+export default Primary;
