@@ -7,7 +7,7 @@ export interface JobExperience {
     year: number;
     month: string;
   } | null;
-  company: string;
+  companyName: string;
   companyImageUrl: string;
   description: string;
   jobTitle: string;
@@ -19,7 +19,7 @@ export interface JobExperienceForm {
   endYear: number;
   endMonth: string;
   isCurrent: boolean;
-  company: string;
+  companyName: string;
   companyImageUrl: string;
   description: string;
   jobTitle: string;

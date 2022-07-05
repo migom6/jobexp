@@ -73,7 +73,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
         />
       </div>
       <Controller
-        name="company"
+        name="companyName"
         control={control}
         rules={{ required: true }}
         render={({

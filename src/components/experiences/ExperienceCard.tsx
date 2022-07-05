@@ -19,7 +19,7 @@ const ExperienceCard: FC<Props> = ({
   index,
   startDate,
   endDate,
-  company,
+  companyName,
   companyImageUrl,
   description,
   jobTitle,
@@ -46,7 +46,7 @@ const ExperienceCard: FC<Props> = ({
           <div className="flex flex-col gap-2">
             <div className="flex flex-col text-gray-900">
               <span className="text-sm text-gray-700">Company</span>
-              <span className="">{company}</span>
+              <span className="">{companyName}</span>
             </div>
             <div className="flex flex-col">
               <span className="text-sm text-gray-700">Job Title</span>
@@ -64,7 +64,7 @@ const ExperienceCard: FC<Props> = ({
       </div>
       <ControlsExperienceCard
         jobExperience={{
-          company,
+          companyName,
           companyImageUrl,
           description,
           endDate,

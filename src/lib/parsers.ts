@@ -16,7 +16,7 @@ export const formValueToExperience = (
   return {
     startDate,
     endDate,
-    company: form.company,
+    companyName: form.companyName,
     companyImageUrl: form.companyImageUrl,
     description: form.description,
     jobTitle: form.jobTitle,
@@ -37,7 +37,7 @@ export const experienceToFormValue = (
     endYear,
     endMonth,
     isCurrent,
-    company: experience.company,
+    companyName: experience.companyName,
     companyImageUrl: experience.companyImageUrl,
     description: experience.description,
     jobTitle: experience.jobTitle,

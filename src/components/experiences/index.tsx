@@ -7,7 +7,7 @@ const jobs: JobExperience[] = [
   {
     startDate: { year: 2020, month: "January" },
     endDate: { year: 2020, month: "January" },
-    company: "Acko",
+    companyName: "Acko",
     companyImageUrl: "",
     description: "lorem ipsum dolor sit amet consectetur adipisicing elit",
     jobTitle: "Software Developer 2",
@@ -15,7 +15,7 @@ const jobs: JobExperience[] = [
   {
     startDate: { year: 2020, month: "January" },
     endDate: { year: 2020, month: "January" },
-    company: "Acko",
+    companyName: "Acko",
     companyImageUrl: "",
     description: "lorem ipsum dolor sit amet consectetur adipisicing elit",
     jobTitle: "Software Developer 2",
@@ -23,7 +23,7 @@ const jobs: JobExperience[] = [
   {
     startDate: { year: 2020, month: "January" },
     endDate: { year: 2020, month: "January" },
-    company: "Uolo",
+    companyName: "Uolo",
     companyImageUrl: "",
     description: "lorem ipsum dolor sit amet consectetur adipisicing elit",
     jobTitle: "Software Developer 2",
