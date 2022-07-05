@@ -23,7 +23,10 @@ const userData: Prisma.UserCreateInput[] = [
 
 async function main() {
   console.log(`Start seeding ...`);
+  await prisma.jobExperience.deleteMany();
+  await prisma.profile.deleteMany();
   await prisma.user.deleteMany();
+
   for (const u of userData) {
     const user = await prisma.user.create({
       data: u,
