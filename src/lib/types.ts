@@ -31,3 +31,20 @@ export interface PersonalDetails {
   email: string;
   website: string;
 }
+
+export interface User {
+  username: string;
+  profileImageUrl: string;
+  jobExperiences: {
+    isPublic: boolean;
+    jobExperiencesData: JobExperience[];
+  };
+  personalDetails: {
+    isPublic: boolean;
+    personalDetailsData: PersonalDetails;
+  };
+  about: {
+    isPublic: boolean;
+    aboutData: string;
+  };
+}

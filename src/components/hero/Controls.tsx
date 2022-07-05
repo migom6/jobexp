@@ -18,7 +18,7 @@ const Controls = () => {
         change
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
-        <UploadProfile setOpen={setOpen} />
+        <UploadProfile profileImageUrl="" setOpen={setOpen} />
       </Modal>
     </>
   );

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Modal } from "../common/modal";
 import EditAbout from "./EditAbout";
 
+const about = "lorem ipsum";
+
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
 
@@ -18,7 +20,7 @@ const Controls = () => {
         </button>
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
-        <EditAbout setOpen={setOpen} />
+        <EditAbout about={about} setOpen={setOpen} />
       </Modal>
     </>
   );
