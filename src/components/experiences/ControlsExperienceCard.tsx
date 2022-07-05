@@ -1,10 +1,13 @@
 import { PencilAltIcon } from "@heroicons/react/outline";
 import { TrashIcon } from "@heroicons/react/solid";
-import { useEffect, useState } from "react";
+import { JobExperience } from "lib/types";
+import { FC, useEffect, useState } from "react";
 import { Modal } from "../common/modal";
-import AddExperience from "./AddExperience";
+import ExperienceForm from "./ExperienceForm";
 
-const ControlsExperienceCard = () => {
+const ControlsExperienceCard: FC<{ jobExperience: JobExperience }> = ({
+  jobExperience,
+}) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -18,7 +21,11 @@ const ControlsExperienceCard = () => {
         </button>
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
-        <AddExperience setOpen={setOpen} />
+        <ExperienceForm
+          jobExperience={jobExperience}
+          type="edit"
+          setOpen={setOpen}
+        />
       </Modal>
     </>
   );

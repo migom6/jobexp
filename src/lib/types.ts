@@ -1,8 +1,26 @@
 export interface JobExperience {
-  startDate: string;
-  endDate: string | null;
+  startDate: {
+    year: number;
+    month: string;
+  };
+  endDate: {
+    year: number;
+    month: string;
+  } | null;
   company: string;
-  companyUrl: string;
+  companyImageUrl: string;
+  description: string;
+  jobTitle: string;
+}
+
+export interface JobExperienceForm {
+  startYear: number;
+  startMonth: string;
+  endYear: number;
+  endMonth: string;
+  isCurrent: boolean;
+  company: string;
+  companyImageUrl: string;
   description: string;
   jobTitle: string;
 }

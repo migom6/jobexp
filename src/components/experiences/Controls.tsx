@@ -2,7 +2,7 @@ import { PlusCircleIcon } from "@heroicons/react/outline";
 import { EyeIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import { Modal } from "../common/modal";
-import AddExperience from "./AddExperience";
+import AddExperience from "./ExperienceForm";
 
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
@@ -18,7 +18,7 @@ const Controls = () => {
         </button>
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
-        <AddExperience setOpen={setOpen} />
+        <AddExperience type="add" setOpen={setOpen} />
       </Modal>
     </>
   );

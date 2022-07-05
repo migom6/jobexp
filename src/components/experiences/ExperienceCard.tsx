@@ -20,7 +20,7 @@ const ExperienceCard: FC<Props> = ({
   startDate,
   endDate,
   company,
-  companyUrl,
+  companyImageUrl,
   description,
   jobTitle,
 }) => {
@@ -33,8 +33,12 @@ const ExperienceCard: FC<Props> = ({
     <li className="flex w-full flex-col gap-4 md:flex-row">
       <div className="flex w-full gap-2">
         <div className="flex flex-col justify-between text-center text-sm">
-          <span className="w-[66px]">{endDate}</span>
-          <span className="w-[66px]">{startDate}</span>
+          <span className="w-[66px]">
+            {endDate?.month}, {endDate?.year}
+          </span>
+          <span className="w-[66px]">
+            {startDate?.month}, {startDate?.year}
+          </span>
         </div>
         <div
           className={`flex gap-2 rounded-md border-l-2 ${borderCSS} max-w-md bg-white p-5 drop-shadow-md`}
@@ -54,11 +58,20 @@ const ExperienceCard: FC<Props> = ({
             </div>
           </div>
           <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full bg-yellow-200">
-            {companyUrl}
+            {companyImageUrl}
           </div>
         </div>
       </div>
-      <ControlsExperienceCard />
+      <ControlsExperienceCard
+        jobExperience={{
+          company,
+          companyImageUrl,
+          description,
+          endDate,
+          jobTitle,
+          startDate,
+        }}
+      />
     </li>
   );
 };
