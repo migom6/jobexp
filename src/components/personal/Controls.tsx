@@ -1,8 +1,16 @@
 import { PencilAltIcon } from "@heroicons/react/solid";
 import { EyeIcon } from "@heroicons/react/solid";
+import { PersonalDetails } from "lib/types";
 import { useEffect, useState } from "react";
 import { Modal } from "../common/modal";
 import EditPersonal from "./EditPersonal";
+
+const personalDetails: Partial<PersonalDetails> = {
+  name: "John Doe",
+  email: "m@m.com",
+  dob: "2000-01-01",
+  website: "www.m.com",
+};
 
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
@@ -18,7 +26,7 @@ const Controls = () => {
         </button>
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
-        <EditPersonal setOpen={setOpen} />
+        <EditPersonal personalDetails={personalDetails} setOpen={setOpen} />
       </Modal>
     </>
   );

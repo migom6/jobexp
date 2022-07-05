@@ -24,3 +24,10 @@ export interface JobExperienceForm {
   description: string;
   jobTitle: string;
 }
+
+export interface PersonalDetails {
+  name: string;
+  dob: string;
+  email: string;
+  website: string;
+}
