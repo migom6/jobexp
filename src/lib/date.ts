@@ -22,3 +22,15 @@ function generateYears() {
   }
   return years;
 }
+
+export const infinteDate = new Date("2100-01-01T00:00:00.000Z");
+export const convertToISO = ({
+  year,
+  month,
+}: {
+  year: number;
+  month: string;
+}) => {
+  const monthIndex = months.indexOf(month);
+  return new Date(year, monthIndex, 1).toISOString();
+};

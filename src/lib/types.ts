@@ -32,19 +32,24 @@ export interface PersonalDetails {
   website: string;
 }
 
-export interface User {
+export interface Profile {
   username: string;
   profileImageUrl: string;
-  jobExperiences: {
+  jobExperiencesData: {
     isPublic: boolean;
-    jobExperiencesData: JobExperience[];
+    jobExperiences: JobExperience[];
   };
-  personalDetails: {
+  personalDetailsData: {
     isPublic: boolean;
-    personalDetailsData: PersonalDetails;
+    personalDetails: PersonalDetails;
   };
-  about: {
+  aboutData: {
     isPublic: boolean;
-    aboutData: string;
+    about: string;
   };
+}
+
+export interface User {
+  username: string;
+  isLoggedIn: boolean;
 }

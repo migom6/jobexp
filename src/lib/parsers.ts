@@ -1,4 +1,9 @@
-import { JobExperience, JobExperienceForm } from "./types";
+import {
+  Profile as ProfileDB,
+  JobExperience as JobExperienceDB,
+} from "@prisma/client";
+import { convertToISO, infinteDate } from "./date";
+import { JobExperience, JobExperienceForm, Profile } from "./types";
 
 export const formValueToExperience = (
   form: JobExperienceForm
@@ -41,5 +46,77 @@ export const experienceToFormValue = (
     companyImageUrl: experience.companyImageUrl,
     description: experience.description,
     jobTitle: experience.jobTitle,
+  };
+};
+
+export const profileDBtoClient = (
+  profileDB: ProfileDB & {
+    jobExperiences: JobExperienceDB[];
+  }
+): Profile => {
+  return {
+    username: profileDB.username,
+    profileImageUrl: profileDB.profileImageUrl,
+    jobExperiencesData: {
+      isPublic: profileDB.jobExperiencesIsPublic,
+      jobExperiences: jobExperiencesDBtoClient(profileDB.jobExperiences),
+    },
+    personalDetailsData: {
+      isPublic: profileDB.personalDetailsIsPublic,
+      personalDetails: JSON.parse(profileDB.personalDetails),
+    },
+    aboutData: {
+      isPublic: profileDB.aboutIsPublic,
+      about: profileDB.about,
+    },
+  };
+};
+
+export const jobExperiencesDBtoClient = (
+  jobExperiencesDB: JobExperienceDB[]
+): JobExperience[] => {
+  return jobExperiencesDB.map((jobExperienceDB) => {
+    const startDate = new Date(jobExperienceDB.startDate);
+    const endDate =
+      new Date(jobExperienceDB.endDate).getTime() === infinteDate.getTime()
+        ? null
+        : new Date(jobExperienceDB.endDate);
+
+    return {
+      companyName: jobExperienceDB.companyName,
+      companyImageUrl: jobExperienceDB.companyImageUrl,
+      description: jobExperienceDB.description,
+      jobTitle: jobExperienceDB.jobTitle,
+      startDate: {
+        month: startDate.toLocaleString("default", { month: "long" }),
+        year: startDate.getFullYear(),
+      },
+      endDate:
+        endDate === null
+          ? null
+          : {
+              month: endDate.toLocaleString("default", { month: "long" }),
+              year: endDate.getFullYear(),
+            },
+    };
+  });
+};
+
+export const jobExperiencesClientToDB = (
+  jobExperience: JobExperience
+): Omit<JobExperienceDB, "username" | "createdAt" | "updatedAt" | "id"> => {
+  const startDate: Date = new Date(convertToISO(jobExperience.startDate));
+  const endDate: Date =
+    jobExperience.endDate === null
+      ? infinteDate
+      : new Date(convertToISO(jobExperience.endDate));
+
+  return {
+    companyName: jobExperience.companyName,
+    companyImageUrl: jobExperience.companyImageUrl,
+    description: jobExperience.description,
+    jobTitle: jobExperience.jobTitle,
+    startDate,
+    endDate,
   };
 };
