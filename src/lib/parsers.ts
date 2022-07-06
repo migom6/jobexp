@@ -5,6 +5,8 @@ import {
 import { convertToISO, infinteDate } from "./date";
 import { JobExperience, JobExperienceForm, Profile } from "./types";
 
+// form stuffs
+
 export const formValueToExperience = (
   form: JobExperienceForm
 ): JobExperience => {
@@ -49,6 +51,8 @@ export const experienceToFormValue = (
   };
 };
 
+// Profile
+
 export const profileDBtoClient = (
   profileDB: ProfileDB & {
     jobExperiences: JobExperienceDB[];
@@ -71,6 +75,8 @@ export const profileDBtoClient = (
     },
   };
 };
+
+// Job Experiences
 
 export const jobExperiencesDBtoClient = (
   jobExperiencesDB: JobExperienceDB[]

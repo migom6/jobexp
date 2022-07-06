@@ -1,11 +1,46 @@
+import { login, LoginForm } from "lib/api";
+import useUser from "lib/hooks/useUser";
 import Link from "next/link";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { useCallback } from "react";
+import Router from "next/router";
+import Input from "components/common/Input";
+import ErrorText from "components/common/ErrorText";
+import Submit from "components/common/buttons/Submit";
 
 const Login = () => {
+  useUser({ redirectTo: "/", redirectIfFound: true });
+
+  const { control, handleSubmit, watch, setError } = useForm<LoginForm>({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<LoginForm> = useCallback(
+    async (data) => {
+      try {
+        const res = await login(data);
+        if (res.status === 200) {
+          Router.push("/");
+        } else {
+          throw new Error(await res.text());
+        }
+      } catch (error) {
+        console.error("username or password does not match");
+        setError("username", {
+          message: "username or password does not match",
+        });
+      }
+    },
+    [setError]
+  );
+
   return (
     <form
       className="mt-8 space-y-6 rounded-md bg-white px-5 py-8 drop-shadow-sm"
-      action="#"
-      method="POST"
+      onSubmit={handleSubmit(onSubmit)}
     >
       <h2 className="text-2xl font-semibold text-gray-800">🙏 Welcome back!</h2>
       <div className="rounded-md shadow-sm">
@@ -13,28 +48,54 @@ const Login = () => {
           <label htmlFor="username" className="sr-only">
             Username
           </label>
-          <input
-            id="username"
+          <Controller
             name="username"
-            type="text"
-            autoComplete="username"
-            required
-            className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            placeholder="Username"
+            control={control}
+            rules={{ required: "required" }}
+            render={({
+              field: { name, onBlur, onChange, value },
+              fieldState: { isTouched, error },
+            }) => (
+              <div>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Username *"
+                  value={value}
+                  name={name}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                />
+                {error && <ErrorText>{error.message}</ErrorText>}
+              </div>
+            )}
           />
         </div>
         <div className="mt-5">
           <label htmlFor="password" className="sr-only">
             Password
           </label>
-          <input
-            id="password"
+          <Controller
             name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            placeholder="Password"
+            control={control}
+            rules={{ required: "required" }}
+            render={({
+              field: { name, onBlur, onChange, value },
+              fieldState: { isTouched, error },
+            }) => (
+              <div>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password *"
+                  value={value}
+                  name={name}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                />
+                {error && <ErrorText>{error.message}</ErrorText>}
+              </div>
+            )}
           />
         </div>
       </div>
@@ -54,12 +115,12 @@ const Login = () => {
         </div>
       </div>
       <div>
-        <button
+        <Submit
           type="submit"
           className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Sign in
-        </button>
+        </Submit>
       </div>
     </form>
   );

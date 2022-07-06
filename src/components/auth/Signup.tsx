@@ -1,56 +1,138 @@
+import useUser from "lib/hooks/useUser";
 import Link from "next/link";
+import { FormEvent, FormEventHandler, useCallback, useState } from "react";
+import Router from "next/router";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { signup } from "lib/api";
+import { RegisterForm } from "lib/api";
+import Input from "components/common/Input";
+import Submit from "components/common/buttons/Submit";
+import ErrorText from "components/common/ErrorText";
 
 const Signup = () => {
+  useUser({ redirectTo: "/", redirectIfFound: true });
+
+  const { control, handleSubmit, watch, setError } = useForm<RegisterForm>({
+    defaultValues: {
+      username: "",
+      password: "",
+      rpassword: "",
+    },
+  });
+
+  const onSubmit: SubmitHandler<RegisterForm> = useCallback(
+    async (data) => {
+      try {
+        const res = await signup(data);
+        if (res.status === 200) {
+          Router.push("/login");
+        } else {
+          throw new Error(await res.text());
+        }
+      } catch (error) {
+        console.error("user already exists");
+        setError("username", { message: "username already exists" });
+      }
+    },
+    [setError]
+  );
+
+  const password = watch("password");
+
   return (
     <form
+      onSubmit={handleSubmit(onSubmit)}
       className="mt-8 space-y-6 rounded-md bg-white px-5 py-8 drop-shadow-sm"
-      action="#"
-      method="POST"
     >
       <h2 className="text-2xl font-semibold text-gray-800">
         Create an account!
       </h2>
-      <div className="rounded-md shadow-sm">
+      <div className="rounded-md p-4 shadow-sm">
         <div>
           <label htmlFor="username" className="sr-only">
             Username
           </label>
-          <input
-            id="username"
+
+          <Controller
             name="username"
-            type="text"
-            autoComplete="username"
-            required
-            className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            placeholder="Username"
+            control={control}
+            rules={{ required: "required" }}
+            render={({
+              field: { name, onBlur, onChange, value },
+              fieldState: { isTouched, error },
+            }) => (
+              <div>
+                <Input
+                  id="username"
+                  type="text"
+                  placeholder="Username *"
+                  value={value}
+                  name={name}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                />
+                {error && <ErrorText>{error.message}</ErrorText>}
+              </div>
+            )}
           />
         </div>
         <div className="mt-5">
           <label htmlFor="password" className="sr-only">
             Password
           </label>
-          <input
-            id="password"
+
+          <Controller
             name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            placeholder="Password"
+            control={control}
+            rules={{ required: "required" }}
+            render={({
+              field: { name, onBlur, onChange, value },
+              fieldState: { isTouched, error },
+            }) => (
+              <div>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="Password *"
+                  value={value}
+                  name={name}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                />
+                {error && <ErrorText>{error.message}</ErrorText>}
+              </div>
+            )}
           />
         </div>
         <div className="mt-5">
-          <label htmlFor="password" className="sr-only">
+          <label htmlFor="rpassword" className="sr-only">
             Re-enter Password
           </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            className="relative block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-            placeholder="Re-enter Password"
+          <Controller
+            name="rpassword"
+            control={control}
+            rules={{
+              required: "required",
+              validate: (rpassword) =>
+                rpassword !== password ? "incorrect password" : true,
+            }}
+            render={({
+              field: { name, onBlur, onChange, value },
+              fieldState: { isTouched, error },
+            }) => (
+              <div>
+                <Input
+                  id="rpassword"
+                  type="password"
+                  placeholder="Re-enter Password *"
+                  value={value}
+                  name={name}
+                  onBlur={onBlur}
+                  onChange={onChange}
+                />
+                {error && <ErrorText>{error.message}</ErrorText>}
+              </div>
+            )}
           />
         </div>
       </div>
@@ -72,12 +154,12 @@ const Signup = () => {
         </div>
       </div>
       <div>
-        <button
+        <Submit
           type="submit"
           className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           Sign up
-        </button>
+        </Submit>
       </div>
     </form>
   );

@@ -1,16 +1,10 @@
 import { PencilAltIcon } from "@heroicons/react/solid";
 import { EyeIcon } from "@heroicons/react/solid";
+import Visibility from "components/visibility/Index";
 import { PersonalDetails } from "lib/types";
 import { useEffect, useState } from "react";
 import { Modal } from "../common/modal";
 import EditPersonal from "./EditPersonal";
-
-const personalDetails: Partial<PersonalDetails> = {
-  name: "John Doe",
-  email: "m@m.com",
-  dob: "2000-01-01",
-  website: "www.m.com",
-};
 
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
@@ -21,12 +15,10 @@ const Controls = () => {
         <button onClick={() => setOpen((isOpen) => !isOpen)}>
           <PencilAltIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
-        <button>
-          <EyeIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
-        </button>
+        <Visibility section="personalDetails" />
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
-        <EditPersonal personalDetails={personalDetails} setOpen={setOpen} />
+        <EditPersonal setOpen={setOpen} />
       </Modal>
     </>
   );

@@ -9,12 +9,13 @@ export default function Home() {
   const { user } = useUser({
     redirectTo: "/login",
   });
+
   return (
     <>
-      <Hero />
       <Layout>
-        <div className="flex w-full max-w-7xl flex-wrap-reverse justify-between gap-5 lg:flex-nowrap">
-          <div className="flex w-full flex-col gap-5 text-slate-900">
+        <Hero />
+        <div className="flex w-full max-w-7xl flex-wrap-reverse justify-between gap-5 py-12 px-4 sm:px-6 lg:flex-nowrap lg:px-8">
+          <div className="flex flex-col gap-5 text-slate-900">
             <About />
             <Experiences />
           </div>

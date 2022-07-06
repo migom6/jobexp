@@ -18,6 +18,9 @@ async function signupRoute(req: NextApiRequest, res: NextApiResponse) {
       data: {
         username,
         password,
+        profile: {
+          create: {},
+        },
       },
     });
     req.session.user = { ...user, isLoggedIn: true };

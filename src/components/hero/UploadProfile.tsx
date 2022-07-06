@@ -3,6 +3,8 @@ import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
 import ImageUpload from "components/common/ImageUpload";
 import Input from "components/common/Input";
+import { putProfileImageUrl } from "lib/api";
+import useProfile from "lib/hooks/useProfile";
 import {
   Dispatch,
   FC,
@@ -15,19 +17,26 @@ const errorMessage = "Please upload an image";
 
 const EditPersonal: FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
-  profileImageUrl: string;
-}> = ({ setOpen, profileImageUrl }) => {
-  const [image, setImage] = useState(profileImageUrl);
+}> = ({ setOpen }) => {
+  const { profile, mutateProfile } = useProfile({});
+  const [image, setImage] = useState(profile?.profileImageUrl ?? "");
   const [error, setError] = useState("");
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!image) {
       setError(errorMessage);
       return;
     }
     setError("");
-    console.log(image);
+
+    try {
+      const profile = await putProfileImageUrl({ profileImageUrl: image });
+      mutateProfile(profile);
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+    setOpen(false);
   };
 
   return (

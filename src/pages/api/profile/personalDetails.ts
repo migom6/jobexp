@@ -1,28 +1,27 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "server/session";
-import { Profile } from "lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
+import { VisibleReq } from "lib/api";
+import { PersonalDetails, Profile } from "lib/types";
 import { prisma } from "server/prisma";
 import { profileDBtoClient } from "lib/parsers";
 
-export default withIronSessionApiRoute(profileRoute, sessionOptions);
+export default withIronSessionApiRoute(visibleRoute, sessionOptions);
 
-async function profileRoute(
+async function visibleRoute(
   req: NextApiRequest,
   res: NextApiResponse<Profile | { message: string }>
 ) {
-  const queryUsername = req.query.username as string;
+  const { personalDetails } = req.body as { personalDetails?: PersonalDetails };
 
-  if (req.session.user || queryUsername?.length > 0) {
-    // in a real world application you might read the user id from the session and then do a database request
-    // to get more information on the user if needed
+  if (req.session.user) {
     try {
-      const profileDB = await prisma.profile.findFirstOrThrow({
+      const profileDB = await prisma.profile.update({
         where: {
-          username:
-            queryUsername?.length > 0
-              ? queryUsername
-              : req.session.user!.username,
+          username: req.session.user.username,
+        },
+        data: {
+          personalDetails: JSON.stringify(personalDetails),
         },
         include: {
           jobExperiences: true,

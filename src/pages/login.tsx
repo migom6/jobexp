@@ -8,7 +8,7 @@ const Index = () => {
   const showSignup = query.new === "true";
 
   return (
-    <Layout>
+    <Layout hideHeader>
       <div className="mx-auto w-full max-w-md space-y-8 self-center">
         {!showSignup ? <Login /> : <Signup />}
       </div>

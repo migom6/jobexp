@@ -20,7 +20,7 @@ model Profile {
   username String  @unique 
   profileImageUrl String @default("")
   about String @default("")
-  personalDetails String  @default("")
+  personalDetails String  @default("{\"name\":\"\",\"email\":\"\",\"dob\":\"\",\"website\":\"\"}")
   jobExperiences JobExperience[]
   aboutIsPublic Boolean @default(true)
   personalDetailsIsPublic Boolean @default(true)

@@ -2,6 +2,8 @@ import Secondary from "components/common/buttons/Secondary";
 import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
 import TextArea from "components/common/TextArea";
+import { putProfileAbout } from "lib/api";
+import useProfile from "lib/hooks/useProfile";
 import {
   Dispatch,
   FC,
@@ -14,18 +16,25 @@ const errorMessage = "Required";
 
 const EditAbout: FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
-  about: string;
-}> = ({ setOpen, about }) => {
-  const [_about, setAbout] = useState(about);
+}> = ({ setOpen }) => {
+  const { profile, mutateProfile } = useProfile({});
+  const [_about, setAbout] = useState(profile?.aboutData.about ?? "");
   const [error, setError] = useState("");
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!_about) {
       setError(errorMessage);
       return;
     }
     setError("");
-    console.log(_about);
+
+    try {
+      const profile = await putProfileAbout({ about: _about });
+      mutateProfile(profile);
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+    setOpen(false);
   };
 
   return (

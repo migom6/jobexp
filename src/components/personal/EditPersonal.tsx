@@ -2,20 +2,31 @@ import Secondary from "components/common/buttons/Secondary";
 import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
 import Input from "components/common/Input";
+import { putPersonalDetails } from "lib/api";
+import useProfile from "lib/hooks/useProfile";
 import { PersonalDetails } from "lib/types";
 import { Dispatch, FC, SetStateAction } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 const EditPersonal: FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
-  personalDetails: Partial<PersonalDetails>;
-}> = ({ setOpen, personalDetails }) => {
+}> = ({ setOpen }) => {
+  const { profile, mutateProfile } = useProfile({});
+
   const { control, handleSubmit } = useForm<PersonalDetails>({
-    defaultValues: personalDetails,
+    defaultValues: profile?.personalDetailsData.personalDetails ?? {},
   });
 
-  const onSubmit: SubmitHandler<PersonalDetails> = (data) => {
+  const onSubmit: SubmitHandler<PersonalDetails> = async (data) => {
     console.log(data);
+
+    try {
+      const profile = await putPersonalDetails({ personalDetails: data });
+      mutateProfile(profile);
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+    setOpen(false);
   };
 
   return (

@@ -19,6 +19,9 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
         username,
       },
     });
+    if (user.password !== password) {
+      throw new Error("Password is incorrect");
+    }
     req.session.user = { ...user, isLoggedIn: true };
     await req.session.save();
     res.json(user);

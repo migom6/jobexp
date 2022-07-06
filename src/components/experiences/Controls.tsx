@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import { EyeIcon } from "@heroicons/react/solid";
+import Visibility from "components/visibility/Index";
 import { useEffect, useState } from "react";
 import { Modal } from "../common/modal";
 import AddExperience from "./ExperienceForm";
@@ -13,9 +14,7 @@ const Controls = () => {
         <button onClick={() => setOpen((isOpen) => !isOpen)}>
           <PlusCircleIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
-        <button>
-          <EyeIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
-        </button>
+        <Visibility section="experiences" />
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
         <AddExperience type="add" setOpen={setOpen} />
