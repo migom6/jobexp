@@ -3,8 +3,12 @@ import Personal from "components/personal";
 import Hero from "components/hero";
 import Experiences from "components/experiences";
 import About from "components/about";
+import useUser from "lib/hooks/useUser";
 
 export default function Home() {
+  const { user } = useUser({
+    redirectTo: "/login",
+  });
   return (
     <>
       <Hero />
