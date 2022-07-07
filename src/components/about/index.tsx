@@ -1,12 +1,10 @@
 import Info from "components/common/Info";
-import useProfile from "lib/hooks/useProfile";
+import useAbout from "lib/hooks/useAbout";
 import { FC } from "react";
 import Controls from "./Controls";
 
 const About: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
-  const { profile } = useProfile({
-    username: hasControls ? undefined : "admin",
-  });
+  const { aboutData } = useAbout();
 
   return (
     <section className="max-w-2xl">
@@ -14,8 +12,8 @@ const About: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
         <h2 className="text-xl font-semibold capitalize">About me</h2>
         {hasControls && <Controls />}
       </div>
-      {profile?.aboutData.about ? (
-        <p className="mt-2 md:text-lg">{profile?.aboutData.about}</p>
+      {aboutData?.about ? (
+        <p className="mt-2 md:text-lg">{aboutData.about}</p>
       ) : (
         <Info>Please update your about section</Info>
       )}

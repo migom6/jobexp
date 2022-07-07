@@ -3,7 +3,7 @@ import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
 import Input from "components/common/Input";
 import { putPersonalDetails } from "lib/api";
-import useProfile from "lib/hooks/useProfile";
+import usePersonalDetails from "lib/hooks/usePersonalDetails";
 import { PersonalDetails } from "lib/types";
 import { Dispatch, FC, SetStateAction } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -11,18 +11,24 @@ import { Controller, SubmitHandler, useForm } from "react-hook-form";
 const EditPersonal: FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
 }> = ({ setOpen }) => {
-  const { profile, mutateProfile } = useProfile({});
+  const { personalDetailsData, mutatePersonalDetailsData } =
+    usePersonalDetails();
 
   const { control, handleSubmit } = useForm<PersonalDetails>({
-    defaultValues: profile?.personalDetailsData.personalDetails ?? {},
+    defaultValues: personalDetailsData?.personalDetails ?? {},
   });
 
   const onSubmit: SubmitHandler<PersonalDetails> = async (data) => {
     console.log(data);
 
     try {
-      const profile = await putPersonalDetails({ personalDetails: data });
-      mutateProfile(profile);
+      const res = await putPersonalDetails({
+        personalDetailsData: {
+          personalDetails: data,
+          isPublic: personalDetailsData?.isPublic ?? true,
+        },
+      });
+      mutatePersonalDetailsData(res);
     } catch (e) {
       console.log((e as Error).message);
     }

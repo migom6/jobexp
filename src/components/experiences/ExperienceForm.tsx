@@ -3,7 +3,7 @@ import Submit from "components/common/buttons/Submit";
 import Input from "components/common/Input";
 import TextArea from "components/common/TextArea";
 import { Select, Option } from "components/common/Select";
-import { Dispatch, FC, ReactElement, SetStateAction, useState } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import { months, years } from "lib/date";
 import CheckBox from "components/common/CheckBox";
 import ImageUpload from "components/common/ImageUpload";
@@ -11,13 +11,13 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { JobExperience, JobExperienceForm } from "lib/types";
 import ErrorText from "components/common/ErrorText";
 import { experienceToFormValue, formValueToExperience } from "lib/parsers";
-import useProfile from "lib/hooks/useProfile";
 import { editJobExperience, newJobExperience } from "lib/api";
+import useJobExperiences from "lib/hooks/useJobExperiences";
 
 const defaultValues = {
-  startYear: 2002,
+  startYear: 2022,
   startMonth: "January",
-  endYear: 2002,
+  endYear: 2022,
   endMonth: "January",
   company: "",
   companyImageUrl: "",
@@ -44,7 +44,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
         ? defaultValues
         : experienceToFormValue(props.jobExperience),
   });
-  const { mutateProfile } = useProfile({});
+  const { mutateJobExperiencesData } = useJobExperiences();
 
   const onSubmit: SubmitHandler<JobExperienceForm> = async (data) => {
     try {
@@ -63,7 +63,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
     const profile = await newJobExperience({
       jobExperience: formValueToExperience(data),
     });
-    mutateProfile(profile, {
+    mutateJobExperiencesData(profile, {
       revalidate: false,
     });
   };
@@ -76,7 +76,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
           ...formValueToExperience(data),
         },
       });
-      mutateProfile(profile, {
+      mutateJobExperiencesData(profile, {
         revalidate: false,
       });
     }

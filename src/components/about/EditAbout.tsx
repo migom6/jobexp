@@ -3,7 +3,7 @@ import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
 import TextArea from "components/common/TextArea";
 import { putProfileAbout } from "lib/api";
-import useProfile from "lib/hooks/useProfile";
+import useAbout from "lib/hooks/useAbout";
 import {
   Dispatch,
   FC,
@@ -17,10 +17,12 @@ const errorMessage = "Required";
 const EditAbout: FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
 }> = ({ setOpen }) => {
-  const { profile, mutateProfile } = useProfile({});
-  const [_about, setAbout] = useState(profile?.aboutData.about ?? "");
+  const { aboutData, mutateAboutData } = useAbout();
+  const [_about, setAbout] = useState(aboutData?.about ?? "");
   const [error, setError] = useState("");
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    if (!aboutData) return;
+
     e.preventDefault();
     if (!_about) {
       setError(errorMessage);
@@ -29,8 +31,10 @@ const EditAbout: FC<{
     setError("");
 
     try {
-      const profile = await putProfileAbout({ about: _about });
-      mutateProfile(profile);
+      const res = await putProfileAbout({
+        aboutData: { about: _about, isPublic: aboutData.isPublic },
+      });
+      mutateAboutData(res);
     } catch (e) {
       console.log((e as Error).message);
     }

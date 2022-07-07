@@ -16,7 +16,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ErrorBoundary fallback={<Error />}>
         <SWRConfig
           value={{
-            revalidateIfStale: false,
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
             errorRetryCount: 0,

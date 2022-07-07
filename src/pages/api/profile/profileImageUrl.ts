@@ -1,40 +1,30 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "server/session";
 import { NextApiRequest, NextApiResponse } from "next";
-import { VisibleReq } from "lib/api";
 import { Profile } from "lib/types";
-import { prisma } from "server/prisma";
-import { profileDBtoClient } from "lib/parsers";
+import {
+  getProfileImageUrl,
+  updateProfileImageUrl,
+} from "server/controllers/profileImageUrl";
 
-export default withIronSessionApiRoute(visibleRoute, sessionOptions);
+export default withIronSessionApiRoute(profileImageUrlRoute, sessionOptions);
 
-async function visibleRoute(
+async function profileImageUrlRoute(
   req: NextApiRequest,
-  res: NextApiResponse<Profile | { message: string }>
+  res: NextApiResponse<
+    { profileImageUrl: Profile["profileImageUrl"] } | { message: string }
+  >
 ) {
-  const { profileImageUrl } = req.body;
-
-  if (req.session.user) {
-    try {
-      const profileDB = await prisma.profile.update({
-        where: {
-          username: req.session.user.username,
-        },
-        data: {
-          profileImageUrl,
-        },
-        include: {
-          jobExperiences: true,
-        },
-      });
-      const profile: Profile = profileDBtoClient(profileDB);
-      res.json({
-        ...profile,
-      });
-    } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
-    }
-  } else {
-    res.status(401).json({ message: "unauthorized" });
+  const { method } = req;
+  switch (method) {
+    case "GET":
+      await getProfileImageUrl(req, res);
+      break;
+    case "PUT":
+      await updateProfileImageUrl(req, res);
+      break;
+    default:
+      res.setHeader("Allow", ["GET", "PUT"]);
+      res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

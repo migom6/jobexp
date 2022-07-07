@@ -2,9 +2,8 @@ import Secondary from "components/common/buttons/Secondary";
 import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
 import ImageUpload from "components/common/ImageUpload";
-import Input from "components/common/Input";
 import { putProfileImageUrl } from "lib/api";
-import useProfile from "lib/hooks/useProfile";
+import useProfileImageUrl from "lib/hooks/useProfileImageUrl";
 import {
   Dispatch,
   FC,
@@ -18,8 +17,8 @@ const errorMessage = "Please upload an image";
 const EditPersonal: FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
 }> = ({ setOpen }) => {
-  const { profile, mutateProfile } = useProfile({});
-  const [image, setImage] = useState(profile?.profileImageUrl ?? "");
+  const { profileImageUrl, mutateProfileImageUrl } = useProfileImageUrl();
+  const [image, setImage] = useState(profileImageUrl?.profileImageUrl ?? "");
   const [error, setError] = useState("");
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -32,7 +31,7 @@ const EditPersonal: FC<{
 
     try {
       const profile = await putProfileImageUrl({ profileImageUrl: image });
-      mutateProfile(profile);
+      mutateProfileImageUrl(profile, { revalidate: false });
     } catch (e) {
       console.log((e as Error).message);
     }

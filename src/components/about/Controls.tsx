@@ -1,20 +1,38 @@
 import { PencilAltIcon } from "@heroicons/react/solid";
 import Visibility from "components/visibility/Index";
-import { useEffect, useState } from "react";
+import { putProfileAbout } from "lib/api";
+import useAbout from "lib/hooks/useAbout";
+import { useState } from "react";
 import { Modal } from "../common/modal";
 import EditAbout from "./EditAbout";
 
-const about = "lorem ipsum";
-
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
+  const { aboutData, mutateAboutData } = useAbout();
+
+  const handleVisibilityChange = async () => {
+    if (!aboutData) return;
+    try {
+      const res = await putProfileAbout({
+        aboutData: { about: aboutData.about, isPublic: !aboutData.isPublic },
+      });
+      mutateAboutData(res);
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+    setOpen(false);
+  };
+
   return (
     <>
       <div className="flex gap-5">
         <button onClick={() => setOpen((isOpen) => !isOpen)}>
           <PencilAltIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
-        <Visibility section="about" />
+        <Visibility
+          isPublic={aboutData?.isPublic ?? true}
+          onClick={handleVisibilityChange}
+        />
       </div>
       <Modal isOpen={isOpen} setOpen={setOpen}>
         {/* profile will be load by this time */}

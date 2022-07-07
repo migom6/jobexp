@@ -1,7 +1,7 @@
 import { PencilAltIcon } from "@heroicons/react/outline";
 import { TrashIcon } from "@heroicons/react/solid";
 import { deleteJobExperience } from "lib/api";
-import useProfile from "lib/hooks/useProfile";
+import useJobExperiences from "lib/hooks/useJobExperiences";
 import { JobExperience } from "lib/types";
 import { FC, useState } from "react";
 import { Modal } from "../common/modal";
@@ -12,14 +12,14 @@ const ControlsExperienceCard: FC<{ jobExperience: JobExperience }> = ({
 }) => {
   const [isOpen, setOpen] = useState(false);
 
-  const { mutateProfile } = useProfile({});
+  const { mutateJobExperiencesData } = useJobExperiences();
 
   const onDelete = async () => {
     try {
       const profile = await deleteJobExperience({
         id: jobExperience.id,
       });
-      mutateProfile(profile, {
+      mutateJobExperiencesData(profile, {
         revalidate: false,
       });
     } catch (e) {

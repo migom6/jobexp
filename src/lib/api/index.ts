@@ -1,4 +1,4 @@
-import { JobExperience, PersonalDetails } from "lib/types";
+import { JobExperience, PersonalDetails, Profile } from "lib/types";
 
 export type RegisterForm = {
   username: string;
@@ -36,7 +36,9 @@ export const logout = async () => {
   return fetch("/api/auth/logout");
 };
 
-export const putProfileImageUrl = async (body: { profileImageUrl: string }) => {
+export const putProfileImageUrl = async (body: {
+  profileImageUrl: Profile["profileImageUrl"];
+}) => {
   try {
     const res = await fetch("/api/profile/profileImageUrl", {
       method: "PUT",
@@ -53,7 +55,9 @@ export const putProfileImageUrl = async (body: { profileImageUrl: string }) => {
   }
 };
 
-export const putProfileAbout = async (body: { about: string }) => {
+export const putProfileAbout = async (body: {
+  aboutData: Profile["aboutData"];
+}) => {
   try {
     const res = await fetch("/api/profile/about", {
       method: "PUT",
@@ -71,7 +75,7 @@ export const putProfileAbout = async (body: { about: string }) => {
 };
 
 export const putPersonalDetails = async (body: {
-  personalDetails: PersonalDetails;
+  personalDetailsData: Profile["personalDetailsData"];
 }) => {
   try {
     const res = await fetch("/api/profile/personalDetails", {

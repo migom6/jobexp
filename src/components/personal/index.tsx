@@ -1,23 +1,15 @@
-import useProfile from "lib/hooks/useProfile";
-import { PersonalDetails } from "lib/types";
+import usePersonalDetails from "lib/hooks/usePersonalDetails";
 import { FC } from "react";
 import Controls from "./Controls";
 
-const personalDetails: Partial<PersonalDetails> = {
-  name: "John Doe",
-  email: "m@m.com",
-  dob: "2000-01-01",
-  website: "www.m.com",
-};
-
 const Personal: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
-  const { profile, mutateProfile } = useProfile({});
+  const { personalDetailsData } = usePersonalDetails();
 
-  if (!profile) {
+  if (!personalDetailsData) {
     return <div>Loading</div>;
   }
 
-  const personalDetails = profile?.personalDetailsData.personalDetails;
+  const personalDetails = personalDetailsData.personalDetails;
   return (
     <div className="flex h-fit w-full flex-col gap-4 rounded-md border border-gray-100 bg-white px-5 py-8 text-slate-900 drop-shadow-sm lg:w-96">
       {hasControls && <Controls />}

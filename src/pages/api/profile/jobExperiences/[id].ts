@@ -4,76 +4,25 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/prisma";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "server/session";
+import {
+  deleteJobExperience,
+  updateJobExperience,
+} from "server/controllers/jobExperiences";
 export default withIronSessionApiRoute(jobHandler, sessionOptions);
 
 // UPDATE AND DELELTE JOB EXPERIENCE
 async function jobHandler(
   req: NextApiRequest,
-  res: NextApiResponse<Profile | { message: string }>
+  res: NextApiResponse<Profile["jobExperiencesData"] | { message: string }>
 ) {
-  const { query, body, method } = req;
-  const { id } = query as { id: string };
-  const { jobExperience } = body as {
-    jobExperience: JobExperience;
-  };
+  const { method } = req;
+
   switch (method) {
     case "PUT":
-      if (req.session.user) {
-        try {
-          await prisma.jobExperience.update({
-            where: {
-              id: parseInt(id),
-            },
-            data: {
-              username: req.session.user.username,
-              ...jobExperiencesClientToDB(jobExperience),
-            },
-          });
-          const profileDB = await prisma.profile.findFirstOrThrow({
-            where: {
-              username: req.session.user.username,
-            },
-            include: {
-              jobExperiences: true,
-            },
-          });
-          const profile: Profile = profileDBtoClient(profileDB);
-          res.json({
-            ...profile,
-          });
-        } catch (error) {
-          res.status(500).json({ message: (error as Error).message });
-        }
-      } else {
-        res.status(401).json({ message: "unauthorized" });
-      }
+      await updateJobExperience(req, res);
       break;
     case "DELETE":
-      if (req.session.user) {
-        try {
-          await prisma.jobExperience.delete({
-            where: {
-              id: parseInt(id),
-            },
-          });
-          const profileDB = await prisma.profile.findFirstOrThrow({
-            where: {
-              username: req.session.user.username,
-            },
-            include: {
-              jobExperiences: true,
-            },
-          });
-          const profile: Profile = profileDBtoClient(profileDB);
-          res.json({
-            ...profile,
-          });
-        } catch (error) {
-          res.status(500).json({ message: (error as Error).message });
-        }
-      } else {
-        res.status(401).json({ message: "unauthorized" });
-      }
+      await deleteJobExperience(req, res);
       break;
     default:
       res.setHeader("Allow", ["PUT", "DELETE"]);

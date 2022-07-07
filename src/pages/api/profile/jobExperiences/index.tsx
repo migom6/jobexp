@@ -1,49 +1,31 @@
-import { jobExperiencesClientToDB, profileDBtoClient } from "lib/parsers";
 import { Profile, JobExperience } from "lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "server/prisma";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "server/session";
+import {
+  createJobExperience,
+  getJobExperiences,
+} from "server/controllers/jobExperiences";
 export default withIronSessionApiRoute(jobHandler, sessionOptions);
 
 // CREATE A NEW JOBEXP
 async function jobHandler(
   req: NextApiRequest,
-  res: NextApiResponse<Profile | { message: string }>
+  res: NextApiResponse<Profile["jobExperiencesData"] | { message: string }>
 ) {
-  const { body, method } = req;
-  const { jobExperience } = body as { jobExperience: JobExperience };
+  const { method } = req;
   switch (method) {
+    case "GET":
+      await getJobExperiences(req, res);
+      break;
     case "POST":
-      if (req.session.user) {
-        try {
-          await prisma.jobExperience.create({
-            data: {
-              username: req.session.user.username,
-              ...jobExperiencesClientToDB(jobExperience),
-            },
-          });
-          const profileDB = await prisma.profile.findFirstOrThrow({
-            where: {
-              username: req.session.user.username,
-            },
-            include: {
-              jobExperiences: true,
-            },
-          });
-          const profile: Profile = profileDBtoClient(profileDB);
-          res.json({
-            ...profile,
-          });
-        } catch (error) {
-          res.status(500).json({ message: (error as Error).message });
-        }
-      } else {
-        res.status(401).json({ message: "unauthorized" });
-      }
+      await createJobExperience(req, res);
+      break;
+    case "PUT":
+      // @TODO update job experience visibility
       break;
     default:
-      res.setHeader("Allow", ["POST"]);
+      res.setHeader("Allow", ["GET", "POST", "PUT"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
