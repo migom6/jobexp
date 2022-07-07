@@ -7,18 +7,29 @@ import Error from "components/error";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ErrorBoundary fallback={<Error />}>
-      <SWRConfig
-        value={{
-          fetcher: fetchJson,
-          onError: (err) => {
-            console.error(err);
-          },
-        }}
-      >
-        <Component {...pageProps} />
-      </SWRConfig>
-    </ErrorBoundary>
+    <>
+      <meta
+        name="viewport"
+        content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+      />
+
+      <ErrorBoundary fallback={<Error />}>
+        <SWRConfig
+          value={{
+            revalidateIfStale: false,
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+            errorRetryCount: 0,
+            fetcher: fetchJson,
+            onError: (err) => {
+              console.error(err);
+            },
+          }}
+        >
+          <Component {...pageProps} />
+        </SWRConfig>
+      </ErrorBoundary>
+    </>
   );
 }
 
