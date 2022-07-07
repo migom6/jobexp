@@ -1,4 +1,5 @@
 export interface JobExperience {
+  id: number;
   startDate: {
     year: number;
     month: string;

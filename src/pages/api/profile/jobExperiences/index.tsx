@@ -2,9 +2,12 @@ import { jobExperiencesClientToDB, profileDBtoClient } from "lib/parsers";
 import { Profile, JobExperience } from "lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/prisma";
+import { withIronSessionApiRoute } from "iron-session/next";
+import { sessionOptions } from "server/session";
+export default withIronSessionApiRoute(jobHandler, sessionOptions);
 
 // CREATE A NEW JOBEXP
-export default async function jobHandler(
+async function jobHandler(
   req: NextApiRequest,
   res: NextApiResponse<Profile | { message: string }>
 ) {

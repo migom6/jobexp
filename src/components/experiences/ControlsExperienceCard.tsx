@@ -1,7 +1,9 @@
 import { PencilAltIcon } from "@heroicons/react/outline";
 import { TrashIcon } from "@heroicons/react/solid";
+import { deleteJobExperience } from "lib/api";
+import useProfile from "lib/hooks/useProfile";
 import { JobExperience } from "lib/types";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { Modal } from "../common/modal";
 import ExperienceForm from "./ExperienceForm";
 
@@ -10,13 +12,28 @@ const ControlsExperienceCard: FC<{ jobExperience: JobExperience }> = ({
 }) => {
   const [isOpen, setOpen] = useState(false);
 
+  const { mutateProfile } = useProfile({});
+
+  const onDelete = async () => {
+    try {
+      const profile = await deleteJobExperience({
+        id: jobExperience.id,
+      });
+      mutateProfile(profile, {
+        revalidate: false,
+      });
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+  };
+
   return (
     <>
       <div className="ml-auto flex gap-5">
         <button onClick={() => setOpen((isOpen) => !isOpen)}>
           <PencilAltIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
-        <button>
+        <button onClick={onDelete}>
           <TrashIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
       </div>

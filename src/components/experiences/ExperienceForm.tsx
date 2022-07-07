@@ -11,6 +11,8 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { JobExperience, JobExperienceForm } from "lib/types";
 import ErrorText from "components/common/ErrorText";
 import { experienceToFormValue, formValueToExperience } from "lib/parsers";
+import useProfile from "lib/hooks/useProfile";
+import { editJobExperience, newJobExperience } from "lib/api";
 
 const defaultValues = {
   startYear: 2002,
@@ -42,10 +44,42 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
         ? defaultValues
         : experienceToFormValue(props.jobExperience),
   });
+  const { mutateProfile } = useProfile({});
 
-  const onSubmit: SubmitHandler<JobExperienceForm> = (data) => {
-    const payload: JobExperience = formValueToExperience(data);
-    console.log(payload);
+  const onSubmit: SubmitHandler<JobExperienceForm> = async (data) => {
+    try {
+      if (type === "add") {
+        await addJobExperienceHandler(data);
+      } else {
+        await editJobExperienceHandler(data);
+      }
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+    setOpen(false);
+  };
+
+  const addJobExperienceHandler = async (data: JobExperienceForm) => {
+    const profile = await newJobExperience({
+      jobExperience: formValueToExperience(data),
+    });
+    mutateProfile(profile, {
+      revalidate: false,
+    });
+  };
+
+  const editJobExperienceHandler = async (data: JobExperienceForm) => {
+    if (type === "edit") {
+      const profile = await editJobExperience({
+        jobExperience: {
+          id: props.jobExperience.id,
+          ...formValueToExperience(data),
+        },
+      });
+      mutateProfile(profile, {
+        revalidate: false,
+      });
+    }
   };
 
   const currentlyWorking = watch("isCurrent");

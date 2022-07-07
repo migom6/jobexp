@@ -2,15 +2,18 @@ import { jobExperiencesClientToDB, profileDBtoClient } from "lib/parsers";
 import { Profile, JobExperience } from "lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/prisma";
+import { withIronSessionApiRoute } from "iron-session/next";
+import { sessionOptions } from "server/session";
+export default withIronSessionApiRoute(jobHandler, sessionOptions);
 
 // UPDATE AND DELELTE JOB EXPERIENCE
-export default async function jobHandler(
+async function jobHandler(
   req: NextApiRequest,
   res: NextApiResponse<Profile | { message: string }>
 ) {
-  const { body, method } = req;
-  const { jobExperience, id } = body as {
-    id: number;
+  const { query, body, method } = req;
+  const { id } = query as { id: string };
+  const { jobExperience } = body as {
     jobExperience: JobExperience;
   };
   switch (method) {
@@ -19,7 +22,7 @@ export default async function jobHandler(
         try {
           await prisma.jobExperience.update({
             where: {
-              id: id,
+              id: parseInt(id),
             },
             data: {
               username: req.session.user.username,
@@ -50,7 +53,7 @@ export default async function jobHandler(
         try {
           await prisma.jobExperience.delete({
             where: {
-              id: id,
+              id: parseInt(id),
             },
           });
           const profileDB = await prisma.profile.findFirstOrThrow({
@@ -73,7 +76,7 @@ export default async function jobHandler(
       }
       break;
     default:
-      res.setHeader("Allow", ["POST"]);
+      res.setHeader("Allow", ["PUT", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

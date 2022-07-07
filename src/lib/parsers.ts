@@ -9,7 +9,7 @@ import { JobExperience, JobExperienceForm, Profile } from "./types";
 
 export const formValueToExperience = (
   form: JobExperienceForm
-): JobExperience => {
+): Omit<JobExperience, "id"> => {
   const startDate = {
     year: form.startYear,
     month: form.startMonth,
@@ -89,6 +89,7 @@ export const jobExperiencesDBtoClient = (
         : new Date(jobExperienceDB.endDate);
 
     return {
+      id: jobExperienceDB.id,
       companyName: jobExperienceDB.companyName,
       companyImageUrl: jobExperienceDB.companyImageUrl,
       description: jobExperienceDB.description,

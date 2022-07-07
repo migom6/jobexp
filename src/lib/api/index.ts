@@ -1,4 +1,4 @@
-import { PersonalDetails } from "lib/types";
+import { JobExperience, PersonalDetails } from "lib/types";
 
 export type RegisterForm = {
   username: string;
@@ -78,6 +78,64 @@ export const putPersonalDetails = async (body: {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
+    });
+
+    if (res.status === 400) {
+      throw new Error("Not allowed");
+    }
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const newJobExperience = async (body: {
+  jobExperience: Omit<JobExperience, "id">;
+}) => {
+  try {
+    const res = await fetch("/api/profile/jobExperiences", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (res.status === 400) {
+      throw new Error("Not allowed");
+    }
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const editJobExperience = async (body: {
+  jobExperience: JobExperience;
+}) => {
+  try {
+    const res = await fetch(
+      `/api/profile/jobExperiences/${body.jobExperience.id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobExperience: body.jobExperience }),
+      }
+    );
+
+    if (res.status === 400) {
+      throw new Error("Not allowed");
+    }
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const deleteJobExperience = async (body: { id: number }) => {
+  try {
+    const res = await fetch(`/api/profile/jobExperiences/${body.id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({}),
     });
 
     if (res.status === 400) {

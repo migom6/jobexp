@@ -16,6 +16,7 @@ const colors = [
 ];
 
 const ExperienceCard: FC<Props> = ({
+  id,
   index,
   startDate,
   endDate,
@@ -64,6 +65,7 @@ const ExperienceCard: FC<Props> = ({
       </div>
       <ControlsExperienceCard
         jobExperience={{
+          id,
           companyName,
           companyImageUrl,
           description,
