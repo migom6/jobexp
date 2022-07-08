@@ -24,8 +24,11 @@ const Controls = () => {
   };
   return (
     <>
-      <div className="flex gap-5">
-        <button onClick={() => setOpen((isOpen) => !isOpen)}>
+      <div className="flex items-center gap-5">
+        <button
+          className="rounded-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          onClick={() => setOpen((isOpen) => !isOpen)}
+        >
           <PlusCircleIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
         <Visibility

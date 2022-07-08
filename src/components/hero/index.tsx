@@ -45,7 +45,17 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
             <Link href={`/user/${user?.username}`}>
               <PrimaryButton>View</PrimaryButton>
             </Link>
-            <SecondaryButton>Share</SecondaryButton>
+            <SecondaryButton
+              onClick={() => {
+                //@TODO: fix late for localhost
+                navigator.clipboard.writeText(
+                  `${location.protocol}://${location.hostname}/user/${user?.username}`
+                );
+                alert("Copied to clipboard");
+              }}
+            >
+              Share
+            </SecondaryButton>
           </div>
         )}
       </div>

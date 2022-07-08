@@ -30,10 +30,16 @@ const ControlsExperienceCard: FC<{ jobExperience: JobExperience }> = ({
   return (
     <>
       <div className="ml-auto flex gap-5">
-        <button onClick={() => setOpen((isOpen) => !isOpen)}>
+        <button
+          className="h-fit rounded-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          onClick={() => setOpen((isOpen) => !isOpen)}
+        >
           <PencilAltIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
-        <button onClick={onDelete}>
+        <button
+          className="h-fit rounded-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          onClick={onDelete}
+        >
           <TrashIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
       </div>
