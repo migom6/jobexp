@@ -138,19 +138,13 @@ const Signup = () => {
       </div>
       <div className="flex items-center justify-end">
         <div className="text-sm">
-          <Link
-            href={{
-              pathname: "/login",
-            }}
+          <a
+            onClick={() => (window.location.href = "/")}
+            className="font-medium text-indigo-600 hover:text-indigo-500"
           >
-            <a
-              href="#"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
-            >
-              {" "}
-              Already have an account ?{" "}
-            </a>
-          </Link>
+            {" "}
+            Already have an account ?{" "}
+          </a>
         </div>
       </div>
       <div>
