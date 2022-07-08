@@ -36,11 +36,15 @@ const ExperienceCard: FC<Props> = ({
     <li className="flex w-full flex-col gap-4 md:flex-row">
       <div className="flex w-full gap-2">
         <div className="flex flex-col justify-between text-center text-sm">
+          {endDate ? (
+            <span className="w-[66px]">
+              {endDate.month}, {endDate.year}
+            </span>
+          ) : (
+            <span className="w-[66px]">Now</span>
+          )}
           <span className="w-[66px]">
-            {endDate?.month}, {endDate?.year}
-          </span>
-          <span className="w-[66px]">
-            {startDate?.month}, {startDate?.year}
+            {startDate.month} {startDate.year}
           </span>
         </div>
         <div

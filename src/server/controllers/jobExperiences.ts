@@ -1,11 +1,14 @@
 import { jobExperiencesClientToDB, profileDBtoClient } from "lib/parsers";
-import { JobExperience, Profile } from "lib/types";
+import { JobExperience, PartialBy, Profile } from "lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/prisma";
 
 export const getJobExperiences = async (
   req: NextApiRequest,
-  res: NextApiResponse<Profile["jobExperiencesData"] | { message: string }>
+  res: NextApiResponse<
+    | PartialBy<Profile["jobExperiencesData"], "jobExperiences">
+    | { message: string }
+  >
 ) => {
   const queryUsername = req.query.username as string;
 
@@ -23,6 +26,10 @@ export const getJobExperiences = async (
         },
       });
       const profile: Profile = profileDBtoClient(profileDB);
+      if (queryUsername?.length > 0 && !profile.jobExperiencesData.isPublic) {
+        res.status(200).json({ isPublic: profile.jobExperiencesData.isPublic });
+        return;
+      }
       res.json({
         ...profile.jobExperiencesData,
       });

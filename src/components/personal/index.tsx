@@ -9,6 +9,10 @@ const Personal: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
     return <div>Loading</div>;
   }
 
+  if (!personalDetailsData.personalDetails) {
+    return <div>Hidden</div>;
+  }
+
   const personalDetails = personalDetailsData.personalDetails;
   return (
     <div className="flex h-fit w-full flex-col gap-4 rounded-md border border-gray-100 bg-white px-5 py-8 text-slate-900 drop-shadow-sm lg:w-96">

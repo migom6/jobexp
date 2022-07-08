@@ -12,7 +12,7 @@ const Controls = () => {
     usePersonalDetails();
 
   const handleVisibilityChange = async () => {
-    if (!personalDetailsData) return;
+    if (!personalDetailsData || !personalDetailsData.personalDetails) return;
     try {
       const res = await putPersonalDetails({
         personalDetailsData: {

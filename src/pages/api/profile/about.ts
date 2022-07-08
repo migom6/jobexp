@@ -1,14 +1,16 @@
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "server/session";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Profile } from "lib/types";
+import { PartialBy, Profile } from "lib/types";
 import { getAbout, updateAbout } from "server/controllers/about";
 
 export default withIronSessionApiRoute(aboutRoute, sessionOptions);
 
 async function aboutRoute(
   req: NextApiRequest,
-  res: NextApiResponse<Profile["aboutData"] | { message: string }>
+  res: NextApiResponse<
+    PartialBy<Profile["aboutData"], "about"> | { message: string }
+  >
 ) {
   const { method } = req;
   switch (method) {

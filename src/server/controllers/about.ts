@@ -1,11 +1,13 @@
 import { profileDBtoClient } from "lib/parsers";
-import { Profile } from "lib/types";
+import { PartialBy, Profile } from "lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "server/prisma";
 
 export const getAbout = async (
   req: NextApiRequest,
-  res: NextApiResponse<Profile["aboutData"] | { message: string }>
+  res: NextApiResponse<
+    PartialBy<Profile["aboutData"], "about"> | { message: string }
+  >
 ) => {
   const queryUsername = req.query.username as string;
 
@@ -23,6 +25,12 @@ export const getAbout = async (
         },
       });
       const profile: Profile = profileDBtoClient(profileDB);
+
+      if (queryUsername?.length > 0 && !profile.aboutData.isPublic) {
+        res.status(200).json({ isPublic: profile.aboutData.isPublic });
+        return;
+      }
+
       res.json({
         ...profile.aboutData,
       });

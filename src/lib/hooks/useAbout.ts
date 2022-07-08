@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { Profile } from "lib/types";
+import { PartialBy, Profile } from "lib/types";
 
 export default function useAbout() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function useAbout() {
     data: aboutData,
     mutate: mutateAboutData,
     error,
-  } = useSWR<Profile["aboutData"]>(
+  } = useSWR<PartialBy<Profile["aboutData"], "about">>(
     username ? `/api/profile/about?username=${username}` : "/api/profile/about"
   );
 

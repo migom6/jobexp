@@ -1,4 +1,4 @@
-import { Profile, JobExperience } from "lib/types";
+import { Profile, JobExperience, PartialBy } from "lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "server/session";
@@ -12,7 +12,10 @@ export default withIronSessionApiRoute(jobHandler, sessionOptions);
 // CREATE A NEW JOBEXP
 async function jobHandler(
   req: NextApiRequest,
-  res: NextApiResponse<Profile["jobExperiencesData"] | { message: string }>
+  res: NextApiResponse<
+    | PartialBy<Profile["jobExperiencesData"], "jobExperiences">
+    | { message: string }
+  >
 ) {
   const { method } = req;
   switch (method) {

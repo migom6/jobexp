@@ -32,7 +32,7 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
           />
           {hasControls && <Controls />}
         </div>
-        {personalDetailsData?.personalDetails.name && (
+        {personalDetailsData?.personalDetails?.name && (
           <h1 className="mt-5 text-2xl font-semibold">
             {personalDetailsData?.personalDetails.name}
           </h1>

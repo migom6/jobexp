@@ -1,6 +1,6 @@
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { Profile } from "lib/types";
+import { PartialBy, Profile } from "lib/types";
 
 export default function useJobExperiences() {
   const router = useRouter();
@@ -12,7 +12,7 @@ export default function useJobExperiences() {
     data: jobExperiencesData,
     mutate: mutateJobExperiencesData,
     error,
-  } = useSWR<Profile["jobExperiencesData"]>(
+  } = useSWR<PartialBy<Profile["jobExperiencesData"], "jobExperiences">>(
     username
       ? `/api/profile/jobExperiences?username=${username}`
       : "/api/profile/jobExperiences"

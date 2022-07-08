@@ -11,7 +11,7 @@ const Controls = () => {
   const { aboutData, mutateAboutData } = useAbout();
 
   const handleVisibilityChange = async () => {
-    if (!aboutData) return;
+    if (!aboutData || !aboutData.about) return;
     try {
       const res = await putProfileAbout({
         aboutData: { about: aboutData.about, isPublic: !aboutData.isPublic },
