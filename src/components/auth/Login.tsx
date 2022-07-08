@@ -3,7 +3,6 @@ import useUser from "lib/hooks/useUser";
 import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useCallback } from "react";
-import Router from "next/router";
 import Input from "components/common/Input";
 import ErrorText from "components/common/ErrorText";
 import Submit from "components/common/buttons/Submit";
