@@ -5,25 +5,29 @@ import Experiences from "components/experiences";
 import About from "components/about";
 import useUser from "lib/hooks/useUser";
 import SuspenseNoSSR from "components/common/SuspenseNoSSR";
+import ExperiencesSkeleton from "components/experiences/ExperiencesSkeleton";
+import AboutSkeleton from "components/about/AboutSuspense";
+import HeroSkeleton from "components/hero/HeroSkeleton";
+import PersonalSkeleton from "components/personal/PersonalSkeleton";
 
 export default function Home() {
   useUser({ redirectTo: "/login" });
   return (
     <>
       <Layout>
-        <SuspenseNoSSR fallback="loading">
+        <SuspenseNoSSR fallback={<HeroSkeleton />}>
           <Hero />
         </SuspenseNoSSR>
         <div className="flex w-full max-w-7xl flex-wrap-reverse justify-between gap-5 py-12 px-4 sm:px-6 md:flex-nowrap lg:px-8">
           <div className="flex flex-col gap-5 text-slate-900">
-            <SuspenseNoSSR fallback="loading">
+            <SuspenseNoSSR fallback={<AboutSkeleton />}>
               <About />
             </SuspenseNoSSR>
-            <SuspenseNoSSR fallback="loading">
+            <SuspenseNoSSR fallback={<ExperiencesSkeleton />}>
               <Experiences />
             </SuspenseNoSSR>
           </div>
-          <SuspenseNoSSR fallback="loading">
+          <SuspenseNoSSR fallback={<PersonalSkeleton />}>
             <Personal />
           </SuspenseNoSSR>
         </div>

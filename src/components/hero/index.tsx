@@ -48,7 +48,9 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
         {hasControls && (
           <div className="flex gap-5">
             <Link href={`/user/${user?.username}`}>
-              <PrimaryButton>View</PrimaryButton>
+              <a>
+                <PrimaryButton>View</PrimaryButton>
+              </a>
             </Link>
             <SecondaryButton
               onClick={() => {
