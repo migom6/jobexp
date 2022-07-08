@@ -13,7 +13,12 @@ const Experiences: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
       </div>
       <ul className="mt-5 flex flex-col gap-6">
         {jobExperiencesData?.jobExperiences.map((job, index) => (
-          <ExperienceCard index={index} key={index} {...job} />
+          <ExperienceCard
+            hasControls={hasControls}
+            index={index}
+            key={index}
+            {...job}
+          />
         ))}
       </ul>
     </section>

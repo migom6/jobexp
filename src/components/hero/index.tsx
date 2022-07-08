@@ -6,6 +6,7 @@ import { FC } from "react";
 import useProfileImageUrl from "lib/hooks/useProfileImageUrl";
 import usePersonalDetails from "lib/hooks/usePersonalDetails";
 import useUser from "lib/hooks/useUser";
+import Link from "next/link";
 
 const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const { profileImageUrl } = useProfileImageUrl();
@@ -41,7 +42,9 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
         )}
         {hasControls && (
           <div className="flex gap-5">
-            <PrimaryButton>View</PrimaryButton>
+            <Link href={`/user/${user?.username}`}>
+              <PrimaryButton>View</PrimaryButton>
+            </Link>
             <SecondaryButton>Share</SecondaryButton>
           </div>
         )}

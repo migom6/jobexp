@@ -108,6 +108,45 @@ export const updateJobExperience = async (
   }
 };
 
+// just to update visibility
+export const updateJobExperiences = async (
+  req: NextApiRequest,
+  res: NextApiResponse<Profile["jobExperiencesData"] | { message: string }>
+) => {
+  const { body } = req;
+  const { jobExperienceData } = body as {
+    jobExperienceData: Pick<Profile["jobExperiencesData"], "isPublic">;
+  };
+  if (req.session.user) {
+    try {
+      await prisma.profile.update({
+        where: {
+          username: req.session.user.username,
+        },
+        data: {
+          jobExperiencesIsPublic: jobExperienceData.isPublic,
+        },
+      });
+      const profileDB = await prisma.profile.findFirstOrThrow({
+        where: {
+          username: req.session.user.username,
+        },
+        include: {
+          jobExperiences: true,
+        },
+      });
+      const profile: Profile = profileDBtoClient(profileDB);
+      res.json({
+        ...profile.jobExperiencesData,
+      });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  } else {
+    res.status(401).json({ message: "unauthorized" });
+  }
+};
+
 export const deleteJobExperience = async (
   req: NextApiRequest,
   res: NextApiResponse<Profile["jobExperiencesData"] | { message: string }>

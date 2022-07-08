@@ -1,5 +1,6 @@
 import { PlusCircleIcon } from "@heroicons/react/outline";
 import Visibility from "components/visibility/Index";
+import { updateJobExperiences } from "lib/api";
 import useJobExperiences from "lib/hooks/useJobExperiences";
 import { useEffect, useState } from "react";
 import { Modal } from "../common/modal";
@@ -7,9 +8,20 @@ import AddExperience from "./ExperienceForm";
 
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
-  const { jobExperiencesData } = useJobExperiences();
+  const { jobExperiencesData, mutateJobExperiencesData } = useJobExperiences();
 
-  const handleVisibilityChange = async () => {};
+  const handleVisibilityChange = async () => {
+    if (!jobExperiencesData) return;
+    try {
+      const res = await updateJobExperiences({
+        jobExperienceData: { isPublic: !jobExperiencesData.isPublic },
+      });
+      mutateJobExperiencesData(res, { revalidate: false });
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+    setOpen(false);
+  };
   return (
     <>
       <div className="flex gap-5">

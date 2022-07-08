@@ -4,6 +4,7 @@ import ControlsExperienceCard from "./ControlsExperienceCard";
 
 interface Props extends JobExperience {
   index?: number; // this is use to generate border color
+  hasControls: boolean;
 }
 
 const colors = [
@@ -24,6 +25,7 @@ const ExperienceCard: FC<Props> = ({
   companyImageUrl,
   description,
   jobTitle,
+  hasControls,
 }) => {
   const borderCSS =
     index !== undefined
@@ -63,17 +65,19 @@ const ExperienceCard: FC<Props> = ({
           </div>
         </div>
       </div>
-      <ControlsExperienceCard
-        jobExperience={{
-          id,
-          companyName,
-          companyImageUrl,
-          description,
-          endDate,
-          jobTitle,
-          startDate,
-        }}
-      />
+      {hasControls && (
+        <ControlsExperienceCard
+          jobExperience={{
+            id,
+            companyName,
+            companyImageUrl,
+            description,
+            endDate,
+            jobTitle,
+            startDate,
+          }}
+        />
+      )}
     </li>
   );
 };

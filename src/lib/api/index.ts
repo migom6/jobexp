@@ -151,6 +151,25 @@ export const deleteJobExperience = async (body: { id: number }) => {
   }
 };
 
+export const updateJobExperiences = async (body: {
+  jobExperienceData: Pick<Profile["jobExperiencesData"], "isPublic">;
+}) => {
+  try {
+    const res = await fetch("/api/profile/jobExperiences", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (res.status === 400) {
+      throw new Error("Not allowed");
+    }
+    return await res.json();
+  } catch (e) {
+    throw e;
+  }
+};
+
 export const changeVisbility = async (body: VisibleReq) => {
   try {
     const res = await fetch("/api/profile/visible", {

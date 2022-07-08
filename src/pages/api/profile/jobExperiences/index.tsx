@@ -5,6 +5,7 @@ import { sessionOptions } from "server/session";
 import {
   createJobExperience,
   getJobExperiences,
+  updateJobExperiences,
 } from "server/controllers/jobExperiences";
 export default withIronSessionApiRoute(jobHandler, sessionOptions);
 
@@ -22,7 +23,7 @@ async function jobHandler(
       await createJobExperience(req, res);
       break;
     case "PUT":
-      // @TODO update job experience visibility
+      await updateJobExperiences(req, res);
       break;
     default:
       res.setHeader("Allow", ["GET", "POST", "PUT"]);
