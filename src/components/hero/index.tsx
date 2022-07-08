@@ -24,11 +24,11 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
     <section className="relative flex w-full flex-col items-center border-b bg-slate-50">
       <div className="h-[300px] w-full bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200" />
       <div className="relative -top-12 flex flex-col items-center">
-        <div className="group relative flex h-[120px] w-[120px] items-center justify-center overflow-hidden rounded-full border-4 border-white bg-red-500 drop-shadow-md">
+        <div className="group relative flex h-[120px] w-[120px] items-center justify-center overflow-hidden rounded-full border-4 border-white drop-shadow-md">
           <Image
             alt="profile picture"
             src={
-              profileImageUrl.profileImageUrl.length > 0
+              profileImageUrl?.profileImageUrl?.length > 0
                 ? profileImageUrl.profileImageUrl
                 : "/vercel.svg"
             }

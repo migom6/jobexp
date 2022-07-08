@@ -1,7 +1,8 @@
+/* eslint-disable @next/next/no-img-element */
 import type { JobExperience } from "lib/types";
 import { FC } from "react";
 import ControlsExperienceCard from "./ControlsExperienceCard";
-
+import Image from "next/image";
 interface Props extends JobExperience {
   index?: number; // this is use to generate border color
   hasControls: boolean;
@@ -31,7 +32,7 @@ const ExperienceCard: FC<Props> = ({
     index !== undefined
       ? colors[index % (colors.length - 1)]
       : "border-green-500";
-
+  console.log(companyImageUrl, "companyImageUrl");
   return (
     <li className="flex w-full flex-col gap-4 md:flex-row">
       <div className="flex w-full gap-2">
@@ -64,8 +65,13 @@ const ExperienceCard: FC<Props> = ({
               <span className="max-w-sm">{description}</span>
             </div>
           </div>
-          <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full bg-yellow-200">
-            {companyImageUrl}
+          <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full ">
+            <Image
+              src={companyImageUrl.length > 0 ? companyImageUrl : "/vercel.svg"}
+              height={56}
+              width={56}
+              alt="company image url"
+            />
           </div>
         </div>
       </div>

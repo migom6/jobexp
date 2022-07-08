@@ -23,7 +23,7 @@ const Login = () => {
       try {
         const res = await login(data);
         if (res.status === 200) {
-          Router.push("/");
+          window.location.href = "/";
         } else {
           throw new Error(await res.text());
         }

@@ -19,8 +19,6 @@ const EditPersonal: FC<{
   });
 
   const onSubmit: SubmitHandler<PersonalDetails> = async (data) => {
-    console.log(data);
-
     try {
       const res = await putPersonalDetails({
         personalDetailsData: {

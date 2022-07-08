@@ -11,7 +11,7 @@ const Header = () => {
   const handleClick = async (e: SyntheticEvent) => {
     try {
       await logout();
-      Router.push("/login");
+      window.location.href = "/login";
     } catch (err) {
       throw err;
     }
@@ -25,13 +25,15 @@ const Header = () => {
           {pathname !== "/" && (
             <Link href="/">
               <li>
-                <Transparent onClick={handleClick}>Profile</Transparent>
+                <Transparent>Profile</Transparent>
               </li>
             </Link>
           )}
-          <li>
-            <Transparent onClick={handleClick}>Logout</Transparent>
-          </li>
+          {pathname === "/" && (
+            <li>
+              <Transparent onClick={handleClick}>Logout</Transparent>
+            </li>
+          )}
         </ul>
       </nav>
     </header>
