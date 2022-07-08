@@ -22,7 +22,9 @@ export const getJobExperiences = async (
               : req.session.user!.username,
         },
         include: {
-          jobExperiences: true,
+          jobExperiences: {
+            orderBy: [{ endDate: "desc" }, { startDate: "desc" }],
+          },
         },
       });
       const profile: Profile = profileDBtoClient(profileDB);
@@ -60,7 +62,9 @@ export const createJobExperience = async (
           username: req.session.user.username,
         },
         include: {
-          jobExperiences: true,
+          jobExperiences: {
+            orderBy: [{ endDate: "desc" }, { startDate: "desc" }],
+          },
         },
       });
       const profile: Profile = profileDBtoClient(profileDB);
@@ -100,7 +104,9 @@ export const updateJobExperience = async (
           username: req.session.user.username,
         },
         include: {
-          jobExperiences: true,
+          jobExperiences: {
+            orderBy: [{ endDate: "desc" }, { startDate: "desc" }],
+          },
         },
       });
       const profile: Profile = profileDBtoClient(profileDB);
@@ -139,7 +145,9 @@ export const updateJobExperiences = async (
           username: req.session.user.username,
         },
         include: {
-          jobExperiences: true,
+          jobExperiences: {
+            orderBy: [{ endDate: "desc" }, { startDate: "desc" }],
+          },
         },
       });
       const profile: Profile = profileDBtoClient(profileDB);
@@ -173,7 +181,9 @@ export const deleteJobExperience = async (
           username: req.session.user.username,
         },
         include: {
-          jobExperiences: true,
+          jobExperiences: {
+            orderBy: [{ endDate: "desc" }, { startDate: "desc" }],
+          },
         },
       });
       const profile: Profile = profileDBtoClient(profileDB);

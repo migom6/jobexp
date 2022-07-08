@@ -38,7 +38,7 @@ const ExperienceCard: FC<Props> = ({
         <div className="flex flex-col justify-between text-center text-sm">
           {endDate ? (
             <span className="w-[66px]">
-              {endDate.month}, {endDate.year}
+              {endDate.month} {endDate.year}
             </span>
           ) : (
             <span className="w-[66px]">Now</span>
@@ -48,7 +48,7 @@ const ExperienceCard: FC<Props> = ({
           </span>
         </div>
         <div
-          className={`flex gap-2 rounded-md border-l-2 ${borderCSS} max-w-md bg-white p-5 drop-shadow-md`}
+          className={`flex justify-between gap-2 rounded-md border-l-2 ${borderCSS} w-full bg-white p-5 drop-shadow-md md:w-96`}
         >
           <div className="flex flex-col gap-2">
             <div className="flex flex-col text-gray-900">
