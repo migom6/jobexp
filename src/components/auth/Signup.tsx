@@ -25,7 +25,7 @@ const Signup = () => {
       try {
         const res = await signup(data);
         if (res.status === 200) {
-          Router.push("/login");
+          window.location.href = "/";
         } else {
           throw new Error(await res.text());
         }
@@ -138,13 +138,19 @@ const Signup = () => {
       </div>
       <div className="flex items-center justify-end">
         <div className="text-sm">
-          <a
-            onClick={() => (window.location.href = "/")}
-            className="font-medium text-indigo-600 hover:text-indigo-500"
+          <Link
+            href={{
+              pathname: "/login",
+            }}
           >
-            {" "}
-            Already have an account ?{" "}
-          </a>
+            <a
+              href="#"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
+              {" "}
+              Already have an account ?{" "}
+            </a>
+          </Link>
         </div>
       </div>
       <div>
