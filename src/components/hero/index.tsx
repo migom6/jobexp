@@ -7,8 +7,13 @@ import useProfileImageUrl from "lib/hooks/useProfileImageUrl";
 import usePersonalDetails from "lib/hooks/usePersonalDetails";
 import useUser from "lib/hooks/useUser";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
+  const router = useRouter();
+  const {
+    query: { username },
+  } = router;
   const { profileImageUrl } = useProfileImageUrl();
   const { personalDetailsData } = usePersonalDetails();
   const { user } = useUser();
@@ -37,9 +42,9 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
             {personalDetailsData?.personalDetails.name}
           </h1>
         )}
-        {hasControls && (
-          <h1 className="mb-5 text-xl font-semibold">@{user?.username}</h1>
-        )}
+        <h1 className="mb-5 text-xl font-semibold">
+          @{username ?? user?.username}
+        </h1>
         {hasControls && (
           <div className="flex gap-5">
             <Link href={`/user/${user?.username}`}>
