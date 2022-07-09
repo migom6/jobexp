@@ -33,7 +33,9 @@ export const login = async (body: LoginForm) => {
 };
 
 export const logout = async () => {
-  return fetch("/api/auth/logout");
+  // https://github.com/vvo/iron-session/issues/274
+
+  return fetch("/api/auth/logout", { method: "POST" });
 };
 
 export const putProfileImageUrl = async (body: {

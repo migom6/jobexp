@@ -23,9 +23,9 @@ model Profile {
   about String @default("")
   personalDetails String  @default("{\"name\":\"\",\"email\":\"\",\"dob\":\"\",\"website\":\"\"}")
   jobExperiences JobExperience[]
-  aboutIsPublic Boolean @default(true)
-  personalDetailsIsPublic Boolean @default(true)
-  jobExperiencesIsPublic Boolean @default(true)
+  aboutIsPublic Boolean @default(false)
+  personalDetailsIsPublic Boolean @default(false)
+  jobExperiencesIsPublic Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

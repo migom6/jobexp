@@ -12,9 +12,9 @@ CREATE TABLE "Profile" (
     "profileImageUrl" TEXT NOT NULL DEFAULT '',
     "about" TEXT NOT NULL DEFAULT '',
     "personalDetails" TEXT NOT NULL DEFAULT '{"name":"","email":"","dob":"","website":""}',
-    "aboutIsPublic" BOOLEAN NOT NULL DEFAULT true,
-    "personalDetailsIsPublic" BOOLEAN NOT NULL DEFAULT true,
-    "jobExperiencesIsPublic" BOOLEAN NOT NULL DEFAULT true,
+    "aboutIsPublic" BOOLEAN NOT NULL DEFAULT false,
+    "personalDetailsIsPublic" BOOLEAN NOT NULL DEFAULT false,
+    "jobExperiencesIsPublic" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL
 );
