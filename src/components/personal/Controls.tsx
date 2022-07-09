@@ -12,11 +12,12 @@ const Controls = () => {
     usePersonalDetails();
 
   const handleVisibilityChange = async () => {
-    if (!personalDetailsData || !personalDetailsData.personalDetails) return;
+    if (!personalDetailsData) return;
     try {
       const res = await putPersonalDetails({
         personalDetailsData: {
-          personalDetails: personalDetailsData.personalDetails,
+          // personalDetails will be there in db
+          personalDetails: personalDetailsData.personalDetails!,
           isPublic: !personalDetailsData.isPublic,
         },
       });

@@ -12,7 +12,10 @@ const Experiences: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
     return <div className="hidden" />;
 
   return (
-    <section>
+    <section
+    // initial={{ y: -50, opacity: 0 }}
+    // animate={{ x: 0, opacity: 1 }}
+    >
       <div className="flex justify-between">
         <h2 className="text-xl font-semibold capitalize">Work Experiences</h2>
         {hasControls && <Controls />}
