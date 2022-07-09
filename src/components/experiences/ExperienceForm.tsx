@@ -36,6 +36,8 @@ type Props2 = {
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
+//@TODO check if start date always older than end date
+
 export default function ExperienceForm(props: Props1 | Props2): ReactElement {
   const { setOpen, type } = props;
   const { control, handleSubmit, watch } = useForm<JobExperienceForm>({

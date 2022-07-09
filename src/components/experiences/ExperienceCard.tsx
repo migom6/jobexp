@@ -34,7 +34,7 @@ const ExperienceCard: FC<Props> = ({
       : "border-green-500";
   console.log(companyImageUrl, "companyImageUrl");
   return (
-    <li className="flex w-full flex-col gap-4 md:flex-row">
+    <li className="flex w-full flex-col gap-4 border-b pb-3 md:flex-row md:border-none md:pb-0">
       <div className="flex w-full gap-2">
         <div className="flex flex-col justify-between text-center text-sm">
           {endDate ? (
@@ -67,7 +67,11 @@ const ExperienceCard: FC<Props> = ({
           </div>
           <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full ">
             <Image
-              src={companyImageUrl.length > 0 ? companyImageUrl : "/vercel.svg"}
+              src={
+                companyImageUrl.length > 0
+                  ? companyImageUrl
+                  : "/images/company.png"
+              }
               height={56}
               width={56}
               alt="company image url"

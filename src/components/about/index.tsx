@@ -10,7 +10,7 @@ const About: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   if (!hasControls && !aboutData.about) return <div className="hidden" />;
 
   return (
-    <section className="max-w-2xl">
+    <section className="w-full max-w-full md:max-w-2xl">
       <div className="flex justify-between">
         <h2 className="text-xl font-semibold capitalize">About me</h2>
         {hasControls && <Controls />}

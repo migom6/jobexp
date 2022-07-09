@@ -1,3 +1,4 @@
+import Info from "components/common/Info";
 import useJobExperiences from "lib/hooks/useJobExperiences";
 import { FC } from "react";
 import Controls from "./Controls";
@@ -28,7 +29,7 @@ const Experiences: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
           ))}
         </ul>
       ) : (
-        <div>empty</div>
+        <Info>Please add your job experience</Info>
       )}
     </section>
   );

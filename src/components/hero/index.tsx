@@ -30,7 +30,7 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
             src={
               profileImageUrl?.profileImageUrl?.length > 0
                 ? profileImageUrl.profileImageUrl
-                : "/vercel.svg"
+                : "/images/avatar.svg"
             }
             height={120}
             width={120}
