@@ -31,6 +31,7 @@ const Controls = () => {
     <>
       <div className="absolute right-5 top-5 flex items-center gap-5">
         <button
+          aria-label="Edit"
           className="h-fit rounded-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={() => setOpen((isOpen) => !isOpen)}
         >

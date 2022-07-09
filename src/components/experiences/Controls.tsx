@@ -26,6 +26,7 @@ const Controls = () => {
     <>
       <div className="flex items-center gap-5">
         <button
+          aria-label="Add"
           className="rounded-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={() => setOpen((isOpen) => !isOpen)}
         >
