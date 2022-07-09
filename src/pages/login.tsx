@@ -3,6 +3,7 @@ import Layout from "components/common/Layout";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Head from "next/head";
 
 const Index = () => {
   const router = useRouter();
@@ -11,6 +12,9 @@ const Index = () => {
 
   return (
     <Layout hideHeader>
+      <Head>
+        <title>😥 JobXP | Login</title>
+      </Head>
       <motion.div
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}

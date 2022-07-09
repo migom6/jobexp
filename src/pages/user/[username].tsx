@@ -8,9 +8,13 @@ import ExperiencesSkeleton from "components/experiences/ExperiencesSkeleton";
 import AboutSkeleton from "components/about/AboutSuspense";
 import HeroSkeleton from "components/hero/HeroSkeleton";
 import PersonalSkeleton from "components/personal/PersonalSkeleton";
+import Head from "next/head";
 export default function Home() {
   return (
     <>
+      <Head>
+        <title>😥 JobXP | Portfolio</title>
+      </Head>
       <Layout>
         <SuspenseNoSSR fallback={<HeroSkeleton />}>
           <Hero hasControls={false} />

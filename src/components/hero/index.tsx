@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 
 const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const router = useRouter();
+
   const {
     query: { username },
   } = router;

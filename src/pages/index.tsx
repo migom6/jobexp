@@ -9,11 +9,15 @@ import ExperiencesSkeleton from "components/experiences/ExperiencesSkeleton";
 import AboutSkeleton from "components/about/AboutSuspense";
 import HeroSkeleton from "components/hero/HeroSkeleton";
 import PersonalSkeleton from "components/personal/PersonalSkeleton";
+import Head from "next/head";
 
 export default function Home() {
   useUser({ redirectTo: "/login" });
   return (
     <>
+      <Head>
+        <title>😥 JobXP | Edit Profile</title>
+      </Head>
       <Layout>
         <SuspenseNoSSR fallback={<HeroSkeleton />}>
           <Hero />
