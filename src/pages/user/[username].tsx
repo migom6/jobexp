@@ -13,7 +13,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>😥 JobXP | Portfolio</title>
+        <title>JobXP | Portfolio</title>
       </Head>
       <Layout>
         <SuspenseNoSSR fallback={<HeroSkeleton />}>

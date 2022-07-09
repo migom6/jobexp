@@ -13,7 +13,7 @@ const Index = () => {
   return (
     <Layout hideHeader>
       <Head>
-        <title>😥 JobXP | Login</title>
+        <title>JobXP | Login</title>
       </Head>
       <motion.div
         initial={{ x: -100, opacity: 0 }}

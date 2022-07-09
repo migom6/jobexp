@@ -16,7 +16,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>😥 JobXP | Edit Profile</title>
+        <title>JobXP | Edit Profile</title>
       </Head>
       <Layout>
         <SuspenseNoSSR fallback={<HeroSkeleton />}>
