@@ -1,22 +1,8 @@
-import { FetchError } from "lib/fetchJson";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { FallbackProps } from "react-error-boundary";
-import { useIsomorphicLayoutEffect } from "framer-motion";
 
 /* eslint-disable @next/next/no-html-link-for-pages */
-const Error: FC<FallbackProps> = ({ error, resetErrorBoundary }) => {
-  const [fallback, setFallbackUI] = useState(false);
-
-  useIsomorphicLayoutEffect(() => {
-    if ((error as FetchError).response.status === 401) {
-      window.location.href = "/login";
-    } else {
-      setFallbackUI(true);
-    }
-  }, []);
-
-  if (!fallback) return <div className="hidden" />;
-
+const Error = () => {
   return (
     <section className="flex h-screen items-center p-16 dark:bg-gray-900 dark:text-gray-100">
       <div className="container mx-auto my-8 flex flex-col items-center justify-center px-5">
@@ -30,13 +16,6 @@ const Error: FC<FallbackProps> = ({ error, resetErrorBoundary }) => {
           <p className="mt-4 mb-8 dark:text-gray-400">
             Contact me at migom6@gmail.com
           </p>
-          <a
-            rel="noopener noreferrer"
-            href="/"
-            className="rounded px-8 py-3 font-semibold dark:bg-violet-400 dark:text-gray-900"
-          >
-            Back to homepage
-          </a>
         </div>
       </div>
     </section>

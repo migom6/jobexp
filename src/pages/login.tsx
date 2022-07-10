@@ -16,8 +16,9 @@ const Index = () => {
         <title>JobXP | Login</title>
       </Head>
       <motion.div
-        initial={{ x: -100, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
+        transition={{ type: "tween" }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
         className="rounded-mdpx-5 mt-12 flex items-center justify-center gap-2 py-2"
       >
         <Image src="/logo.svg" alt="logo" height={60} width={60} />

@@ -1,7 +1,6 @@
 import useUser from "lib/hooks/useUser";
 import Link from "next/link";
-import { FormEvent, FormEventHandler, useCallback, useState } from "react";
-import Router from "next/router";
+import { useCallback } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { signup } from "lib/api";
 import { RegisterForm } from "lib/api";

@@ -27,7 +27,6 @@ const Login = () => {
           throw new Error(await res.text());
         }
       } catch (error) {
-        console.error("username or password does not match");
         setError("username", {
           message: "username or password does not match",
         });

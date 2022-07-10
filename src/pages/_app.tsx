@@ -1,10 +1,8 @@
 import "../../styles/globals.css";
 import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";
-import fetchJson, { FetchError } from "lib/fetchJson";
-import { ErrorBoundary } from "react-error-boundary";
-import Error from "components/error";
-import { useState } from "react";
+import fetchJson from "lib/fetchJson";
+import ErrorBoundary from "components/common/ErrorBoundary";
 
 function MyApp({ Component, pageProps }: AppProps) {
   // reset keys for react-error-boundary
@@ -16,10 +14,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, viewport-fit=cover"
       />
 
-      <ErrorBoundary FallbackComponent={Error}>
+      <ErrorBoundary>
         <SWRConfig
           value={{
-            suspense: true,
             revalidateOnFocus: false,
             revalidateOnReconnect: false,
             errorRetryCount: 0,

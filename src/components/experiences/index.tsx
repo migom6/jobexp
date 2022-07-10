@@ -3,19 +3,15 @@ import useJobExperiences from "lib/hooks/useJobExperiences";
 import { FC } from "react";
 import Controls from "./Controls";
 import ExperienceCard from "./ExperienceCard";
+import ExperiencesSkeleton from "./ExperiencesSkeleton";
 
 const Experiences: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const { jobExperiencesData } = useJobExperiences();
 
-  if (!jobExperiencesData) return <div>Loading</div>;
-  if (!hasControls && !jobExperiencesData.jobExperiences)
-    return <div className="hidden" />;
+  if (!jobExperiencesData) return <ExperiencesSkeleton />;
 
   return (
-    <section
-    // initial={{ y: -50, opacity: 0 }}
-    // animate={{ x: 0, opacity: 1 }}
-    >
+    <section>
       <div className="flex justify-between">
         <h2 className="text-xl font-semibold capitalize">Work Experiences</h2>
         {hasControls && <Controls />}

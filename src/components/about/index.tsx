@@ -1,13 +1,14 @@
 import Info from "components/common/Info";
 import useAbout from "lib/hooks/useAbout";
 import { FC } from "react";
+import AboutSkeleton from "./AboutSkeleton";
 import Controls from "./Controls";
 
 const About: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const { aboutData } = useAbout();
 
-  if (!aboutData) return <div>loading</div>;
-  if (!hasControls && !aboutData.about) return <div className="hidden" />;
+  if (!aboutData) return <AboutSkeleton />;
+  // if (!hasControls && !aboutData.about) return <div className="hidden" />;
 
   return (
     <section className="w-full max-w-full md:max-w-2xl">

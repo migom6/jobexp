@@ -8,6 +8,7 @@ import usePersonalDetails from "lib/hooks/usePersonalDetails";
 import useUser from "lib/hooks/useUser";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import HeroSkeleton from "./HeroSkeleton";
 
 const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const { personalDetailsData } = usePersonalDetails();
   const { user } = useUser();
 
-  if (!profileImageUrl) return <div className="hidden" />;
+  if (!profileImageUrl || !personalDetailsData) return <HeroSkeleton />;
 
   return (
     <section className="relative flex w-full flex-col items-center border-b bg-slate-50">

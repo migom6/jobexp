@@ -1,20 +1,17 @@
 import usePersonalDetails from "lib/hooks/usePersonalDetails";
 import { FC } from "react";
 import Controls from "./Controls";
+import PersonalSkeleton from "./PersonalSkeleton";
 
 const Personal: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const { personalDetailsData } = usePersonalDetails();
 
   if (!personalDetailsData) {
-    return <div>Loading</div>;
+    return <PersonalSkeleton />;
   }
 
   // personalDetails wont be null because it has default in the schema
   const personalDetails = personalDetailsData.personalDetails;
-
-  if (!hasControls && !personalDetails) {
-    return <div className="hidden" />;
-  }
 
   return (
     <div className="flex h-fit w-full flex-col gap-4 rounded-md border border-gray-100 bg-white px-5 py-8 text-slate-900 drop-shadow-sm lg:w-96">
