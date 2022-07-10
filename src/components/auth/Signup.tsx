@@ -26,8 +26,8 @@ const Signup = () => {
       try {
         const res = signup(data);
         toast.promise(res, {
-          loading: "Saving...",
-          success: "Saved!",
+          loading: "Registering user...",
+          success: "Registered!",
           error: (error: FetchError) => {
             if ((error as FetchError).response.status === 400) {
               return "username already exists";

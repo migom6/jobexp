@@ -5,8 +5,6 @@ import {
   FC,
   InputHTMLAttributes,
   ReactNode,
-  useEffect,
-  useState,
 } from "react";
 import { XIcon } from "@heroicons/react/solid";
 

@@ -29,7 +29,6 @@ const EditPersonal: FC<{
       return;
     }
     setError("");
-
     const profile = putProfileImageUrl({ profileImageUrl: image });
     toast.promise(profile, {
       loading: "Saving...",

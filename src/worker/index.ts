@@ -59,6 +59,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  if (!event?.request.url.includes("/api/")) {
+    return;
+  }
+
   const bgSyncLogic = async () => {
     try {
       const response = await fetch(event!.request.clone());

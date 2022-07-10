@@ -24,8 +24,8 @@ const Login = () => {
       try {
         const res = login(data);
         toast.promise(res, {
-          loading: "Saving...",
-          success: "Saved!",
+          loading: "Logging in...",
+          success: "Success",
           error: (error: FetchError) => {
             if ((error as FetchError).response.status === 401) {
               return "Invalid username or password";
