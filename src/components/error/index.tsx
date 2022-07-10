@@ -1,7 +1,3 @@
-import { FC } from "react";
-import { FallbackProps } from "react-error-boundary";
-
-/* eslint-disable @next/next/no-html-link-for-pages */
 const Error = () => {
   return (
     <section className="flex h-screen items-center p-16 dark:bg-gray-900 dark:text-gray-100">
