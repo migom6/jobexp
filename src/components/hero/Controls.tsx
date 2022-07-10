@@ -1,6 +1,4 @@
-import { PencilAltIcon } from "@heroicons/react/solid";
-import { EyeIcon } from "@heroicons/react/solid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal } from "../common/modal";
 import UploadProfile from "./UploadProfile";
 import { CameraIcon } from "@heroicons/react/solid";

@@ -6,11 +6,13 @@ import { useCallback } from "react";
 import Input from "components/common/Input";
 import ErrorText from "components/common/ErrorText";
 import Submit from "components/common/buttons/Submit";
+import { FetchError } from "lib/fetchJson";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   useUser({ redirectTo: "/", redirectIfFound: true });
 
-  const { control, handleSubmit, watch, setError } = useForm<LoginForm>({
+  const { control, handleSubmit, setError } = useForm<LoginForm>({
     defaultValues: {
       username: "",
       password: "",
@@ -20,16 +22,28 @@ const Login = () => {
   const onSubmit: SubmitHandler<LoginForm> = useCallback(
     async (data) => {
       try {
-        const res = await login(data);
-        if (res.status === 200) {
-          window.location.href = "/";
-        } else {
-          throw new Error(await res.text());
-        }
-      } catch (error) {
-        setError("username", {
-          message: "username or password does not match",
+        const res = login(data);
+        toast.promise(res, {
+          loading: "Saving...",
+          success: "Saved!",
+          error: (error: FetchError) => {
+            if ((error as FetchError).response.status === 401) {
+              return "Invalid username or password";
+            } else {
+              return "An error occurred.";
+            }
+          },
         });
+        await res;
+        window.location.href = "/";
+      } catch (error) {
+        if ((error as FetchError).response.status === 401) {
+          setError("username", {
+            message: "username or password does not match",
+          });
+        } else {
+          throw error;
+        }
       }
     },
     [setError]

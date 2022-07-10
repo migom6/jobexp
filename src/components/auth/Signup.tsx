@@ -7,6 +7,8 @@ import { RegisterForm } from "lib/api";
 import Input from "components/common/Input";
 import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
+import { FetchError } from "lib/fetchJson";
+import { toast } from "react-hot-toast";
 
 const Signup = () => {
   useUser({ redirectTo: "/", redirectIfFound: true });
@@ -22,15 +24,26 @@ const Signup = () => {
   const onSubmit: SubmitHandler<RegisterForm> = useCallback(
     async (data) => {
       try {
-        const res = await signup(data);
-        if (res.status === 200) {
-          window.location.href = "/";
-        } else {
-          throw new Error(await res.text());
-        }
+        const res = signup(data);
+        toast.promise(res, {
+          loading: "Saving...",
+          success: "Saved!",
+          error: (error: FetchError) => {
+            if ((error as FetchError).response.status === 400) {
+              return "username already exists";
+            } else {
+              return "An error occurred.";
+            }
+          },
+        });
+        await res;
+        window.location.href = "/";
       } catch (error) {
-        console.error("user already exists");
-        setError("username", { message: "username already exists" });
+        if ((error as FetchError).response.status === 400) {
+          setError("username", { message: "username already exists" });
+        } else {
+          throw error;
+        }
       }
     },
     [setError]

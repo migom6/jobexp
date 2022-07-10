@@ -27,6 +27,7 @@ async function signupRoute(req: NextApiRequest, res: NextApiResponse) {
     await req.session.save();
     res.json(user);
   } catch (error) {
-    res.status(500).json({ message: (error as Error).message });
+    // Bad request if already exists
+    res.status(400).json({ message: (error as Error).message });
   }
 }

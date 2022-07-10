@@ -7,6 +7,7 @@ import usePersonalDetails from "lib/hooks/usePersonalDetails";
 import { PersonalDetails } from "lib/types";
 import { Dispatch, FC, SetStateAction } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 const EditPersonal: FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -20,17 +21,23 @@ const EditPersonal: FC<{
 
   const onSubmit: SubmitHandler<PersonalDetails> = async (data) => {
     try {
-      const res = await putPersonalDetails({
+      const res = putPersonalDetails({
         personalDetailsData: {
           personalDetails: data,
           isPublic: personalDetailsData?.isPublic ?? true,
         },
       });
-      mutatePersonalDetailsData(res);
+      toast.promise(res, {
+        loading: "Saving...",
+        success: "Saved!",
+        error: "Error while saving",
+      });
+      mutatePersonalDetailsData(await res);
     } catch (e) {
-      console.log((e as Error).message);
+      throw e;
+    } finally {
+      setOpen(false);
     }
-    setOpen(false);
   };
 
   return (

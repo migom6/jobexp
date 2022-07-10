@@ -2,7 +2,8 @@ import { PlusCircleIcon } from "@heroicons/react/outline";
 import Visibility from "components/visibility/Index";
 import { updateJobExperiences } from "lib/api";
 import useJobExperiences from "lib/hooks/useJobExperiences";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import toast from "react-hot-toast";
 import { Modal } from "../common/modal";
 import AddExperience from "./ExperienceForm";
 
@@ -13,14 +14,20 @@ const Controls = () => {
   const handleVisibilityChange = async () => {
     if (!jobExperiencesData) return;
     try {
-      const res = await updateJobExperiences({
+      const res = updateJobExperiences({
         jobExperienceData: { isPublic: !jobExperiencesData.isPublic },
+      });
+      toast.promise(res, {
+        loading: "Changing visibility...",
+        success: "Success!",
+        error: "Error changing visibility",
       });
       mutateJobExperiencesData(res, { revalidate: false });
     } catch (e) {
-      console.log((e as Error).message);
+      throw e;
+    } finally {
+      setOpen(false);
     }
-    setOpen(false);
   };
   return (
     <>

@@ -11,6 +11,7 @@ import {
   SetStateAction,
   useState,
 } from "react";
+import { toast } from "react-hot-toast";
 
 const errorMessage = "Required";
 
@@ -31,14 +32,20 @@ const EditAbout: FC<{
     setError("");
 
     try {
-      const res = await putProfileAbout({
+      const res = putProfileAbout({
         aboutData: { about: _about, isPublic: aboutData.isPublic },
       });
-      mutateAboutData(res);
+      toast.promise(res, {
+        loading: "Saving...",
+        success: "Saved!",
+        error: "Error while saving",
+      });
+      mutateAboutData(await res);
     } catch (e) {
-      console.log((e as Error).message);
+      throw e;
+    } finally {
+      setOpen(false);
     }
-    setOpen(false);
   };
 
   return (

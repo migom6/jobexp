@@ -4,6 +4,7 @@ import ErrorText from "components/common/ErrorText";
 import ImageUpload from "components/common/ImageUpload";
 import { putProfileImageUrl } from "lib/api";
 import useProfileImageUrl from "lib/hooks/useProfileImageUrl";
+import { toast } from "react-hot-toast";
 import {
   Dispatch,
   FC,
@@ -29,12 +30,13 @@ const EditPersonal: FC<{
     }
     setError("");
 
-    try {
-      const profile = await putProfileImageUrl({ profileImageUrl: image });
-      mutateProfileImageUrl(profile, { revalidate: false });
-    } catch (e) {
-      console.log((e as Error).message);
-    }
+    const profile = putProfileImageUrl({ profileImageUrl: image });
+    toast.promise(profile, {
+      loading: "Saving...",
+      success: "Saved!",
+      error: "Error saving profile image",
+    });
+    mutateProfileImageUrl(await profile, { revalidate: false });
     setOpen(false);
   };
 

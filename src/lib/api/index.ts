@@ -1,4 +1,5 @@
-import { JobExperience, PersonalDetails, Profile } from "lib/types";
+import fetchJson from "lib/fetchJson";
+import { JobExperience, Profile } from "lib/types";
 
 export type RegisterForm = {
   username: string;
@@ -17,7 +18,7 @@ export type VisibleReq = {
 };
 
 export const signup = async (body: RegisterForm) => {
-  return fetch("/api/auth/signup", {
+  return fetchJson("/api/auth/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -25,7 +26,7 @@ export const signup = async (body: RegisterForm) => {
 };
 
 export const login = async (body: LoginForm) => {
-  return fetch("/api/auth/login", {
+  return fetchJson("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -34,157 +35,85 @@ export const login = async (body: LoginForm) => {
 
 export const logout = async () => {
   // https://github.com/vvo/iron-session/issues/274
-
-  return fetch("/api/auth/logout", { method: "POST" });
+  return fetchJson("/api/auth/logout", { method: "POST" });
 };
 
 export const putProfileImageUrl = async (body: {
   profileImageUrl: Profile["profileImageUrl"];
-}) => {
-  try {
-    const res = await fetch("/api/profile/profileImageUrl", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    if (res.status === 400) {
-      throw new Error("Not allowed");
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
+}): Promise<{
+  profileImageUrl: Profile["profileImageUrl"];
+}> => {
+  return fetchJson("/api/profile/profileImageUrl", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 };
 
 export const putProfileAbout = async (body: {
   aboutData: Profile["aboutData"];
-}) => {
-  try {
-    const res = await fetch("/api/profile/about", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    if (res.status === 400) {
-      throw new Error("Not allowed");
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
+}): Promise<Profile["aboutData"]> => {
+  return fetchJson("/api/profile/about", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 };
 
 export const putPersonalDetails = async (body: {
   personalDetailsData: Profile["personalDetailsData"];
-}) => {
-  try {
-    const res = await fetch("/api/profile/personalDetails", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    if (res.status === 400) {
-      throw new Error("Not allowed");
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
+}): Promise<Profile["personalDetailsData"]> => {
+  return fetchJson("/api/profile/personalDetails", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 };
 
 export const newJobExperience = async (body: {
   jobExperience: Omit<JobExperience, "id">;
-}) => {
-  try {
-    const res = await fetch("/api/profile/jobExperiences", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    if (res.status === 400) {
-      throw new Error("Not allowed");
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
+}): Promise<Profile["jobExperiencesData"]> => {
+  return fetchJson("/api/profile/jobExperiences", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 };
 
 export const editJobExperience = async (body: {
   jobExperience: JobExperience;
-}) => {
-  try {
-    const res = await fetch(
-      `/api/profile/jobExperiences/${body.jobExperience.id}`,
-      {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ jobExperience: body.jobExperience }),
-      }
-    );
-
-    if (res.status === 400) {
-      throw new Error("Not allowed");
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
+}): Promise<Profile["jobExperiencesData"]> => {
+  return fetchJson(`/api/profile/jobExperiences/${body.jobExperience.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ jobExperience: body.jobExperience }),
+  });
 };
 
-export const deleteJobExperience = async (body: { id: number }) => {
-  try {
-    const res = await fetch(`/api/profile/jobExperiences/${body.id}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({}),
-    });
-
-    if (res.status === 400) {
-      throw new Error("Not allowed");
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
+export const deleteJobExperience = async (body: {
+  id: number;
+}): Promise<Profile["jobExperiencesData"]> => {
+  return fetchJson(`/api/profile/jobExperiences/${body.id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  });
 };
 
 export const updateJobExperiences = async (body: {
   jobExperienceData: Pick<Profile["jobExperiencesData"], "isPublic">;
-}) => {
-  try {
-    const res = await fetch("/api/profile/jobExperiences", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    if (res.status === 400) {
-      throw new Error("Not allowed");
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
+}): Promise<Profile["jobExperiencesData"]> => {
+  return fetchJson("/api/profile/jobExperiences", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 };
 
 export const changeVisbility = async (body: VisibleReq) => {
-  try {
-    const res = await fetch("/api/profile/visible", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-
-    if (res.status === 400) {
-      throw new Error("Not allowed");
-    }
-    return await res.json();
-  } catch (e) {
-    throw e;
-  }
+  return fetchJson("/api/profile/visible", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
 };

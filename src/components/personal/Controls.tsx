@@ -3,6 +3,7 @@ import Visibility from "components/visibility/Index";
 import { putPersonalDetails } from "lib/api";
 import usePersonalDetails from "lib/hooks/usePersonalDetails";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Modal } from "../common/modal";
 import EditPersonal from "./EditPersonal";
 
@@ -14,19 +15,26 @@ const Controls = () => {
   const handleVisibilityChange = async () => {
     if (!personalDetailsData) return;
     try {
-      const res = await putPersonalDetails({
+      const res = putPersonalDetails({
         personalDetailsData: {
           // personalDetails will be there in db
           personalDetails: personalDetailsData.personalDetails!,
           isPublic: !personalDetailsData.isPublic,
         },
       });
-      mutatePersonalDetailsData(res);
+      toast.promise(res, {
+        loading: "Changing visibility...",
+        success: "Success!",
+        error: "Error changing visibility",
+      });
+      mutatePersonalDetailsData(await res);
     } catch (e) {
-      console.log((e as Error).message);
+      throw e;
+    } finally {
+      setOpen(false);
     }
-    setOpen(false);
   };
+
   return (
     <>
       <div className="absolute right-5 top-5 flex items-center gap-5">

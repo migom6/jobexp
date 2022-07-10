@@ -4,6 +4,7 @@ import { deleteJobExperience } from "lib/api";
 import useJobExperiences from "lib/hooks/useJobExperiences";
 import { JobExperience } from "lib/types";
 import { FC, useState } from "react";
+import toast from "react-hot-toast";
 import { Modal } from "../common/modal";
 import ExperienceForm from "./ExperienceForm";
 
@@ -16,14 +17,21 @@ const ControlsExperienceCard: FC<{ jobExperience: JobExperience }> = ({
 
   const onDelete = async () => {
     try {
-      const profile = await deleteJobExperience({
+      const jobs = deleteJobExperience({
         id: jobExperience.id,
       });
-      mutateJobExperiencesData(profile, {
+      toast.promise(jobs, {
+        loading: "Deleteing job experience.",
+        success: "Success!",
+        error: "Error",
+      });
+      mutateJobExperiencesData(await jobs, {
         revalidate: false,
       });
     } catch (e) {
-      console.log((e as Error).message);
+      throw e;
+    } finally {
+      setOpen(false);
     }
   };
 

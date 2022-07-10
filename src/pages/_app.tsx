@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { SWRConfig } from "swr";
 import fetchJson from "lib/fetchJson";
 import ErrorBoundary from "components/common/ErrorBoundary";
+import { Toaster } from "react-hot-toast";
 
 function MyApp({ Component, pageProps }: AppProps) {
   // reset keys for react-error-boundary
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           }}
         >
           <Component {...pageProps} />
+          <Toaster />
         </SWRConfig>
       </ErrorBoundary>
     </>

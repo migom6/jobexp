@@ -32,7 +32,6 @@ const ExperienceCard: FC<Props> = ({
     index !== undefined
       ? colors[index % (colors.length - 1)]
       : "border-green-500";
-  console.log(companyImageUrl, "companyImageUrl");
   return (
     <li className="flex w-full flex-col gap-4 border-b pb-3 md:flex-row md:border-none md:pb-0">
       <div className="flex w-full gap-2">

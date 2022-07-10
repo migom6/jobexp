@@ -2,8 +2,6 @@ export default async function fetchJson<JSON = unknown>(
   input: RequestInfo,
   init?: RequestInit
 ): Promise<JSON> {
-  // to support SSR + SUSPENSE
-
   const response = await fetch(input, init);
 
   // if the server replies, there's always some data in json

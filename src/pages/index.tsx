@@ -5,11 +5,6 @@ import Experiences from "components/experiences";
 import About from "components/about";
 import useUser from "lib/hooks/useUser";
 import Head from "next/head";
-import { Suspense } from "react";
-import HeroSkeleton from "components/hero/HeroSkeleton";
-import AboutSkeleton from "components/about/AboutSkeleton";
-import ExperiencesSkeleton from "components/experiences/ExperiencesSkeleton";
-import PersonalSkeleton from "components/personal/PersonalSkeleton";
 
 export default function Home() {
   useUser({ redirectTo: "/login" });

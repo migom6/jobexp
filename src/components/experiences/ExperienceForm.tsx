@@ -13,6 +13,7 @@ import ErrorText from "components/common/ErrorText";
 import { experienceToFormValue, formValueToExperience } from "lib/parsers";
 import { editJobExperience, newJobExperience } from "lib/api";
 import useJobExperiences from "lib/hooks/useJobExperiences";
+import toast from "react-hot-toast";
 
 const defaultValues = {
   startYear: 2022,
@@ -56,29 +57,39 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
         await editJobExperienceHandler(data);
       }
     } catch (e) {
-      console.log((e as Error).message);
+    } finally {
+      setOpen(false);
     }
-    setOpen(false);
   };
 
   const addJobExperienceHandler = async (data: JobExperienceForm) => {
-    const profile = await newJobExperience({
+    const jobs = newJobExperience({
       jobExperience: formValueToExperience(data),
     });
-    mutateJobExperiencesData(profile, {
+    toast.promise(jobs, {
+      loading: "Adding new job experience.",
+      success: "Success!",
+      error: "Error",
+    });
+    mutateJobExperiencesData(await jobs, {
       revalidate: false,
     });
   };
 
   const editJobExperienceHandler = async (data: JobExperienceForm) => {
     if (type === "edit") {
-      const profile = await editJobExperience({
+      const jobs = editJobExperience({
         jobExperience: {
           id: props.jobExperience.id,
           ...formValueToExperience(data),
         },
       });
-      mutateJobExperiencesData(profile, {
+      toast.promise(jobs, {
+        loading: "Edit job experience.",
+        success: "Success!",
+        error: "Error",
+      });
+      mutateJobExperiencesData(await jobs, {
         revalidate: false,
       });
     }

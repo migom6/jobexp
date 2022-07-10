@@ -14,13 +14,14 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
     }
     //@TODO use bcrypt to hash the password
     // get from prisma
-    const user = await prisma.user.findFirstOrThrow({
+    const user = await prisma.user.findFirst({
       where: {
         username,
       },
     });
-    if (user.password !== password) {
-      throw new Error("Password is incorrect");
+    if (user === null || user.password !== password) {
+      res.status(401).json({ error: "Wrong user name or password" });
+      return;
     }
     req.session.user = { ...user, isLoggedIn: true };
     await req.session.save();

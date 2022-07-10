@@ -5,6 +5,7 @@ import useAbout from "lib/hooks/useAbout";
 import { useState } from "react";
 import { Modal } from "../common/modal";
 import EditAbout from "./EditAbout";
+import { toast } from "react-hot-toast";
 
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
@@ -12,17 +13,18 @@ const Controls = () => {
 
   const handleVisibilityChange = async () => {
     if (!aboutData) return;
-    try {
-      const res = await putProfileAbout({
-        aboutData: {
-          about: aboutData.about ?? "",
-          isPublic: !aboutData.isPublic,
-        },
-      });
-      mutateAboutData(res);
-    } catch (e) {
-      console.log((e as Error).message);
-    }
+    const res = putProfileAbout({
+      aboutData: {
+        about: aboutData.about ?? "",
+        isPublic: !aboutData.isPublic,
+      },
+    });
+    toast.promise(res, {
+      loading: "Changing visibility...",
+      success: "Success!",
+      error: "Error changing visibility",
+    });
+    mutateAboutData(await res);
     setOpen(false);
   };
 
