@@ -4,6 +4,7 @@ import { SyntheticEvent } from "react";
 import Router, { useRouter } from "next/router";
 import Transparent from "components/common/buttons/Transparent";
 import Link from "next/link";
+import Primary from "components/common/buttons/Primary";
 const Header = () => {
   const router = useRouter();
   const { pathname } = router;
@@ -22,9 +23,9 @@ const Header = () => {
       <Link href="/">
         <a>
           <Image
-            className="cursor-pointer"
-            width={60}
-            height={60}
+            className="h-[50px] w-[50px] cursor-pointer"
+            width={50}
+            height={50}
             src="/logo.svg"
             alt="logo"
           />
@@ -32,16 +33,21 @@ const Header = () => {
       </Link>
       <nav>
         <ul className="flex items-center justify-between gap-5">
+          <Link href="/discover">
+            <li>
+              <Transparent>Discover</Transparent>
+            </li>
+          </Link>
           {pathname !== "/" && (
             <Link href="/">
               <li>
-                <Transparent>Profile</Transparent>
+                <Primary>Profile</Primary>
               </li>
             </Link>
           )}
           {pathname === "/" && (
             <li>
-              <Transparent onClick={handleClick}>Logout</Transparent>
+              <Primary onClick={handleClick}>Logout</Primary>
             </li>
           )}
         </ul>

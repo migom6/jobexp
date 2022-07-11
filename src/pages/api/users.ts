@@ -7,6 +7,11 @@ export default async function handle(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const result = await prisma.user.findMany();
+  const result = await prisma.profile.findMany({
+    select: {
+      username: true,
+      profileImageUrl: true,
+    },
+  });
   res.json(result);
 }

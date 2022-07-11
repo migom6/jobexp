@@ -9,6 +9,7 @@ import SuspenseNoSSR from "components/common/SuspenseNoSSR";
 import AboutSkeleton from "components/about/AboutSkeleton";
 import ExperiencesSkeleton from "components/experiences/ExperiencesSkeleton";
 import PersonalSkeleton from "components/personal/PersonalSkeleton";
+import HeroSkeleton from "components/hero/HeroSkeleton";
 
 export default function Home() {
   useUser();
@@ -18,7 +19,7 @@ export default function Home() {
         <title>JobXP | Edit Profile</title>
       </Head>
       <Layout>
-        <SuspenseNoSSR fallback={<AboutSkeleton />}>
+        <SuspenseNoSSR fallback={<HeroSkeleton />}>
           <Hero />
         </SuspenseNoSSR>
         <div className="flex w-full max-w-7xl flex-wrap-reverse justify-between gap-5 py-12 px-4 sm:px-6 md:flex-nowrap lg:px-8">
