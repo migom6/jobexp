@@ -6,7 +6,7 @@ const useServiceWorker = () => {
     navigator.serviceWorker.ready.then((registration) => {
       registration.active?.postMessage("replayRequests");
       navigator.serviceWorker.addEventListener("message", (event) => {
-        if (event.data === "replayRequests") {
+        if (event.data === "replayedRequests") {
           toast.success("Replayed offline requests");
         }
       });

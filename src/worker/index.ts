@@ -81,7 +81,7 @@ self.addEventListener("message", (event) => {
     queue.size().then((size) => {
       if (size > 0) {
         queue.replayRequests();
-        (event?.source as Client).postMessage("replayRequests");
+        (event?.source as Client).postMessage("replayedRequests");
       }
     });
   }
