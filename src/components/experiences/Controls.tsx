@@ -1,9 +1,10 @@
 import { PlusCircleIcon } from "@heroicons/react/outline";
+import offlineToast from "components/common/offlineToast";
 import Visibility from "components/visibility/Index";
 import { updateJobExperiences } from "lib/api";
 import useJobExperiences from "lib/hooks/useJobExperiences";
-import { useState } from "react";
-import toast from "react-hot-toast";
+import toastPromisify from "lib/toastPromisify";
+import { useCallback, useState } from "react";
 import { Modal } from "../common/modal";
 import AddExperience from "./ExperienceForm";
 
@@ -11,24 +12,31 @@ const Controls = () => {
   const [isOpen, setOpen] = useState(false);
   const { jobExperiencesData, mutateJobExperiencesData } = useJobExperiences();
 
-  const handleVisibilityChange = async () => {
+  const handleVisibilityChange = useCallback(async () => {
     if (!jobExperiencesData) return;
     try {
       const res = updateJobExperiences({
         jobExperienceData: { isPublic: !jobExperiencesData.isPublic },
       });
-      toast.promise(res, {
+      toastPromisify(res, {
         loading: "Changing visibility...",
         success: "Success!",
-        error: "Error changing visibility",
       });
-      mutateJobExperiencesData(res, { revalidate: false });
+      mutateJobExperiencesData(await res, { revalidate: false });
     } catch (e) {
-      throw e;
+      if (!navigator.onLine) {
+        mutateJobExperiencesData(
+          { ...jobExperiencesData, isPublic: !jobExperiencesData.isPublic },
+          { revalidate: false }
+        );
+        offlineToast();
+      } else {
+        console.error(e);
+      }
     } finally {
       setOpen(false);
     }
-  };
+  }, [jobExperiencesData, mutateJobExperiencesData]);
   return (
     <>
       <div className="flex items-center gap-5">

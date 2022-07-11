@@ -21,24 +21,26 @@ class ErrorBoundary extends Component<Props, State> {
     return { error };
   }
 
-  public componentDidCatch(error: FetchError, errorInfo: ErrorInfo) {
-    console.error("Uncaught error:", error, errorInfo);
-  }
+  // public componentDidCatch(error: FetchError, errorInfo: ErrorInfo) {
+  //   console.error("Uncaught error:", error, errorInfo);
+  // }
 
   public render() {
     if (this.state.error === null) return this.props.children;
+    console.log("ErrorBoundary:", this.state.error);
+
     if (this.state.error.response.status === 401) {
-      Router.replace("/login");
+      window.location.href = "/login";
       return null;
     }
     if (this.state.error.response.status === 500) {
       return <Error />;
     }
     if (this.state.error.response.status === 404) {
-      Router.replace("/404");
+      window.location.href = "/404";
       return null;
     }
-    return <div>offline</div>;
+    return this.props.children;
   }
 }
 

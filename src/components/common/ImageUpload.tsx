@@ -5,8 +5,10 @@ import {
   FC,
   InputHTMLAttributes,
   ReactNode,
+  useCallback,
 } from "react";
 import { XIcon } from "@heroicons/react/solid";
+import toast from "react-hot-toast";
 
 // use handleChange instead of onChange
 interface Props
@@ -21,16 +23,24 @@ interface Props
 }
 
 const Index: FC<Props> = ({ value, handleChange, ...props }) => {
-  const onUpload: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const file = e.target.files![0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        handleChange(e.target!.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  const onUpload: ChangeEventHandler<HTMLInputElement> = useCallback(
+    (e) => {
+      const file = e.target.files![0];
+      if (file) {
+        if (file.size > 1000000) {
+          toast.error("File size is too big");
+          handleChange("");
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          handleChange(e.target!.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+    [handleChange]
+  );
 
   return (
     <div>

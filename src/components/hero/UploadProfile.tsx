@@ -10,8 +10,12 @@ import {
   FC,
   FormEventHandler,
   SetStateAction,
+  useCallback,
   useState,
 } from "react";
+import toastPromisify from "lib/toastPromisify";
+import offlineToast from "components/common/offlineToast";
+import { FetchError } from "lib/fetchJson";
 
 const errorMessage = "Please upload an image";
 
@@ -22,22 +26,41 @@ const EditPersonal: FC<{
   const [image, setImage] = useState(profileImageUrl?.profileImageUrl ?? "");
   const [error, setError] = useState("");
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    e.preventDefault();
-    if (!image) {
-      setError(errorMessage);
-      return;
-    }
-    setError("");
-    const profile = putProfileImageUrl({ profileImageUrl: image });
-    toast.promise(profile, {
-      loading: "Saving...",
-      success: "Saved!",
-      error: "Error saving profile image",
-    });
-    mutateProfileImageUrl(await profile, { revalidate: false });
-    setOpen(false);
-  };
+  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (!image) {
+        setError(errorMessage);
+        return;
+      }
+      setError("");
+      try {
+        const profile = putProfileImageUrl({ profileImageUrl: image });
+        toastPromisify(profile, {
+          loading: "Saving...",
+          success: "Saved!",
+        });
+        mutateProfileImageUrl(await profile, { revalidate: false });
+      } catch (e) {
+        if (!navigator.onLine) {
+          mutateProfileImageUrl(
+            {
+              profileImageUrl: image,
+            },
+            { revalidate: false }
+          );
+          offlineToast();
+        } else if ((e as FetchError)?.response?.status === 413) {
+          toast.error("Image is too large");
+        } else {
+          console.error(e);
+        }
+      } finally {
+        setOpen(false);
+      }
+    },
+    [image, mutateProfileImageUrl, setOpen]
+  );
 
   return (
     <form

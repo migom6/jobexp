@@ -37,7 +37,7 @@ export const getPersonalDetails = async (
         ...profile.personalDetailsData,
       });
     } catch (error) {
-      res.status(500).json({ message: (error as Error).message });
+      res.status(404).json({ message: (error as Error).message });
     }
   } else {
     res.status(401).json({ message: "unauthorized" });

@@ -20,7 +20,9 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const { personalDetailsData } = usePersonalDetails();
   const { user } = useUser();
 
-  if (!profileImageUrl || !personalDetailsData) return <HeroSkeleton />;
+  // if (!profileImageUrl || !personalDetailsData) return <HeroSkeleton />;
+
+  // if (!hasControls && !profileImageUrl) return <div className="hidden" />;
 
   return (
     <section className="relative flex w-full flex-col items-center border-b bg-slate-50">
@@ -30,8 +32,8 @@ const Hero: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
           <Image
             alt="profile picture"
             src={
-              profileImageUrl?.profileImageUrl?.length > 0
-                ? profileImageUrl.profileImageUrl
+              profileImageUrl?.profileImageUrl?.length ?? 0 > 0
+                ? profileImageUrl?.profileImageUrl ?? "/images/avatar.svg"
                 : "/images/avatar.svg"
             }
             height={120}

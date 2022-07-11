@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-html-link-for-pages */
 import Head from "next/head";
 
 export default function Offline() {
@@ -35,13 +34,6 @@ export default function Offline() {
             ></polygon>
           </svg>
           <p className="text-3xl">Looks like you are are currently offline</p>
-          <a
-            rel="noopener noreferrer"
-            href="/"
-            className="rounded px-8 py-3 font-semibold dark:bg-violet-400 dark:text-gray-900"
-          >
-            Back to homepage
-          </a>
         </div>
       </section>
     </>

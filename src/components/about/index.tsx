@@ -8,7 +8,7 @@ const About: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const { aboutData } = useAbout();
 
   if (!aboutData) return <AboutSkeleton />;
-  // if (!hasControls && !aboutData.about) return <div className="hidden" />;
+  if (!hasControls && !aboutData.about) return <div className="hidden" />;
 
   return (
     <section className="w-full max-w-full md:max-w-2xl">

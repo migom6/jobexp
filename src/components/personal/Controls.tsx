@@ -1,9 +1,10 @@
 import { PencilAltIcon } from "@heroicons/react/solid";
+import offlineToast from "components/common/offlineToast";
 import Visibility from "components/visibility/Index";
 import { putPersonalDetails } from "lib/api";
 import usePersonalDetails from "lib/hooks/usePersonalDetails";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toastPromisify from "lib/toastPromisify";
+import { useCallback, useState } from "react";
 import { Modal } from "../common/modal";
 import EditPersonal from "./EditPersonal";
 
@@ -12,7 +13,7 @@ const Controls = () => {
   const { personalDetailsData, mutatePersonalDetailsData } =
     usePersonalDetails();
 
-  const handleVisibilityChange = async () => {
+  const handleVisibilityChange = useCallback(async () => {
     if (!personalDetailsData) return;
     try {
       const res = putPersonalDetails({
@@ -22,18 +23,25 @@ const Controls = () => {
           isPublic: !personalDetailsData.isPublic,
         },
       });
-      toast.promise(res, {
+      toastPromisify(res, {
         loading: "Changing visibility...",
         success: "Success!",
-        error: "Error changing visibility",
       });
       mutatePersonalDetailsData(await res);
     } catch (e) {
-      throw e;
+      if (!navigator.onLine) {
+        mutatePersonalDetailsData(
+          { ...personalDetailsData, isPublic: !personalDetailsData.isPublic },
+          { revalidate: false }
+        );
+        offlineToast();
+      } else {
+        console.error(e);
+      }
     } finally {
       setOpen(false);
     }
-  };
+  }, [mutatePersonalDetailsData, personalDetailsData]);
 
   return (
     <>

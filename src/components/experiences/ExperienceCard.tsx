@@ -23,7 +23,7 @@ const ExperienceCard: FC<Props> = ({
   startDate,
   endDate,
   companyName,
-  companyImageUrl,
+  companyImageUrl = "",
   description,
   jobTitle,
   hasControls,
@@ -48,7 +48,7 @@ const ExperienceCard: FC<Props> = ({
           </span>
         </div>
         <div
-          className={`flex justify-between gap-2 rounded-md border-l-2 ${borderCSS} w-full bg-white p-5 drop-shadow-md md:w-96`}
+          className={`flex justify-between gap-2 rounded-md border-l-2 ${borderCSS} w-full bg-white p-5 drop-shadow-md`}
         >
           <div className="flex flex-col gap-2">
             <div className="flex flex-col text-gray-900">

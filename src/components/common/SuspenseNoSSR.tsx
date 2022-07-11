@@ -10,7 +10,7 @@ const SuspenseNoSSR: FC<{ children: ReactNode; fallback: ReactNode }> = ({
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  if (!isMounted) return <>{fallback}</>;
+  if (isServer || !isMounted) return <>{fallback}</>;
   return <Suspense fallback={fallback}>{children}</Suspense>;
 };
 

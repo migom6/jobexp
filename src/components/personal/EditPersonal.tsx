@@ -2,12 +2,13 @@ import Secondary from "components/common/buttons/Secondary";
 import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
 import Input from "components/common/Input";
+import offlineToast from "components/common/offlineToast";
 import { putPersonalDetails } from "lib/api";
 import usePersonalDetails from "lib/hooks/usePersonalDetails";
+import toastPromisify from "lib/toastPromisify";
 import { PersonalDetails } from "lib/types";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useCallback } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 
 const EditPersonal: FC<{
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -19,26 +20,39 @@ const EditPersonal: FC<{
     defaultValues: personalDetailsData?.personalDetails ?? {},
   });
 
-  const onSubmit: SubmitHandler<PersonalDetails> = async (data) => {
-    try {
-      const res = putPersonalDetails({
-        personalDetailsData: {
-          personalDetails: data,
-          isPublic: personalDetailsData?.isPublic ?? true,
-        },
-      });
-      toast.promise(res, {
-        loading: "Saving...",
-        success: "Saved!",
-        error: "Error while saving",
-      });
-      mutatePersonalDetailsData(await res);
-    } catch (e) {
-      throw e;
-    } finally {
-      setOpen(false);
-    }
-  };
+  const onSubmit: SubmitHandler<PersonalDetails> = useCallback(
+    async (data) => {
+      try {
+        const res = putPersonalDetails({
+          personalDetailsData: {
+            personalDetails: data,
+            isPublic: personalDetailsData?.isPublic ?? true,
+          },
+        });
+        toastPromisify(res, {
+          loading: "Saving...",
+          success: "Saved!",
+        });
+        mutatePersonalDetailsData(await res);
+      } catch (e) {
+        if (!navigator.onLine) {
+          mutatePersonalDetailsData(
+            {
+              personalDetails: data,
+              isPublic: personalDetailsData?.isPublic ?? true,
+            },
+            { revalidate: false }
+          );
+          offlineToast();
+        } else {
+          console.error(e);
+        }
+      } finally {
+        setOpen(false);
+      }
+    },
+    [mutatePersonalDetailsData, personalDetailsData?.isPublic, setOpen]
+  );
 
   return (
     <form

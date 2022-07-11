@@ -2,16 +2,20 @@ import Secondary from "components/common/buttons/Secondary";
 import Submit from "components/common/buttons/Submit";
 import ErrorText from "components/common/ErrorText";
 import TextArea from "components/common/TextArea";
+import offlineToast from "components/common/offlineToast";
 import { putProfileAbout } from "lib/api";
+import { FetchError } from "lib/fetchJson";
 import useAbout from "lib/hooks/useAbout";
+import useAsyncError from "lib/hooks/useAsyncError";
+import toastPromisify from "lib/toastPromisify";
 import {
   Dispatch,
   FC,
   FormEventHandler,
   SetStateAction,
+  useCallback,
   useState,
 } from "react";
-import { toast } from "react-hot-toast";
 
 const errorMessage = "Required";
 
@@ -21,32 +25,43 @@ const EditAbout: FC<{
   const { aboutData, mutateAboutData } = useAbout();
   const [_about, setAbout] = useState(aboutData?.about ?? "");
   const [error, setError] = useState("");
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
-    if (!aboutData) return;
 
-    e.preventDefault();
-    if (!_about) {
-      setError(errorMessage);
-      return;
-    }
-    setError("");
+  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    async (e) => {
+      if (!aboutData) return;
 
-    try {
-      const res = putProfileAbout({
-        aboutData: { about: _about, isPublic: aboutData.isPublic },
-      });
-      toast.promise(res, {
-        loading: "Saving...",
-        success: "Saved!",
-        error: "Error while saving",
-      });
-      mutateAboutData(await res);
-    } catch (e) {
-      throw e;
-    } finally {
-      setOpen(false);
-    }
-  };
+      e.preventDefault();
+      if (!_about) {
+        setError(errorMessage);
+        return;
+      }
+      setError("");
+
+      try {
+        const res = putProfileAbout({
+          aboutData: { about: _about, isPublic: aboutData.isPublic },
+        });
+        toastPromisify(res, {
+          loading: "Saving...",
+          success: "Saved!",
+        });
+        mutateAboutData(await res, { revalidate: false });
+      } catch (e) {
+        if (!navigator.onLine) {
+          mutateAboutData(
+            { ...aboutData, about: _about },
+            { revalidate: false }
+          );
+          offlineToast();
+        } else {
+          console.error(e);
+        }
+      } finally {
+        setOpen(false);
+      }
+    },
+    [_about, aboutData, mutateAboutData, setOpen]
+  );
 
   return (
     <form

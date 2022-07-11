@@ -1,10 +1,11 @@
 import { PencilAltIcon } from "@heroicons/react/outline";
 import { TrashIcon } from "@heroicons/react/solid";
+import offlineToast from "components/common/offlineToast";
 import { deleteJobExperience } from "lib/api";
 import useJobExperiences from "lib/hooks/useJobExperiences";
+import toastPromisify from "lib/toastPromisify";
 import { JobExperience } from "lib/types";
-import { FC, useState } from "react";
-import toast from "react-hot-toast";
+import { FC, useCallback, useState } from "react";
 import { Modal } from "../common/modal";
 import ExperienceForm from "./ExperienceForm";
 
@@ -13,27 +14,40 @@ const ControlsExperienceCard: FC<{ jobExperience: JobExperience }> = ({
 }) => {
   const [isOpen, setOpen] = useState(false);
 
-  const { mutateJobExperiencesData } = useJobExperiences();
+  const { jobExperiencesData, mutateJobExperiencesData } = useJobExperiences();
 
-  const onDelete = async () => {
+  const onDelete = useCallback(async () => {
+    if (!jobExperiencesData) return;
     try {
       const jobs = deleteJobExperience({
         id: jobExperience.id,
       });
-      toast.promise(jobs, {
-        loading: "Deleteing job experience.",
+      toastPromisify(jobs, {
+        loading: "Deleting job experience.",
         success: "Success!",
-        error: "Error",
       });
       mutateJobExperiencesData(await jobs, {
         revalidate: false,
       });
     } catch (e) {
-      throw e;
+      if (!navigator.onLine) {
+        mutateJobExperiencesData(
+          {
+            ...jobExperiencesData,
+            jobExperiences: (jobExperiencesData.jobExperiences ?? []).filter(
+              (j) => j.id !== jobExperience.id
+            ),
+          },
+          { revalidate: false }
+        );
+        offlineToast();
+      } else {
+        console.error(e);
+      }
     } finally {
       setOpen(false);
     }
-  };
+  }, [jobExperience.id, jobExperiencesData, mutateJobExperiencesData]);
 
   return (
     <>

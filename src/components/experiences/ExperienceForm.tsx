@@ -3,7 +3,7 @@ import Submit from "components/common/buttons/Submit";
 import Input from "components/common/Input";
 import TextArea from "components/common/TextArea";
 import { Select, Option } from "components/common/Select";
-import { Dispatch, ReactElement, SetStateAction } from "react";
+import { Dispatch, ReactElement, SetStateAction, useCallback } from "react";
 import { months, years } from "lib/date";
 import CheckBox from "components/common/CheckBox";
 import ImageUpload from "components/common/ImageUpload";
@@ -13,7 +13,8 @@ import ErrorText from "components/common/ErrorText";
 import { experienceToFormValue, formValueToExperience } from "lib/parsers";
 import { editJobExperience, newJobExperience } from "lib/api";
 import useJobExperiences from "lib/hooks/useJobExperiences";
-import toast from "react-hot-toast";
+import toastPromisify from "lib/toastPromisify";
+import offlineToast from "components/common/offlineToast";
 
 const defaultValues = {
   startYear: 2022,
@@ -47,7 +48,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
         ? defaultValues
         : experienceToFormValue(props.jobExperience),
   });
-  const { mutateJobExperiencesData } = useJobExperiences();
+  const { jobExperiencesData, mutateJobExperiencesData } = useJobExperiences();
 
   const onSubmit: SubmitHandler<JobExperienceForm> = async (data) => {
     try {
@@ -57,43 +58,95 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
         await editJobExperienceHandler(data);
       }
     } catch (e) {
+      console.error(e);
     } finally {
       setOpen(false);
     }
   };
 
-  const addJobExperienceHandler = async (data: JobExperienceForm) => {
-    const jobs = newJobExperience({
-      jobExperience: formValueToExperience(data),
-    });
-    toast.promise(jobs, {
-      loading: "Adding new job experience.",
-      success: "Success!",
-      error: "Error",
-    });
-    mutateJobExperiencesData(await jobs, {
-      revalidate: false,
-    });
-  };
+  const addJobExperienceHandler = useCallback(
+    async (data: JobExperienceForm) => {
+      if (!jobExperiencesData) return;
 
-  const editJobExperienceHandler = async (data: JobExperienceForm) => {
-    if (type === "edit") {
-      const jobs = editJobExperience({
-        jobExperience: {
-          id: props.jobExperience.id,
-          ...formValueToExperience(data),
-        },
-      });
-      toast.promise(jobs, {
-        loading: "Edit job experience.",
-        success: "Success!",
-        error: "Error",
-      });
-      mutateJobExperiencesData(await jobs, {
-        revalidate: false,
-      });
-    }
-  };
+      try {
+        const jobs = newJobExperience({
+          jobExperience: formValueToExperience(data),
+        });
+        toastPromisify(jobs, {
+          loading: "Adding new job experience.",
+          success: "Success!",
+        });
+        mutateJobExperiencesData(await jobs, {
+          revalidate: false,
+        });
+      } catch (e) {
+        if (!navigator.onLine) {
+          const length = jobExperiencesData.jobExperiences?.length ?? 0;
+          const newId = length + 1;
+          mutateJobExperiencesData(
+            {
+              ...jobExperiencesData,
+              jobExperiences: [
+                { id: newId, ...formValueToExperience(data) },
+                ...(jobExperiencesData.jobExperiences ?? []),
+              ],
+            },
+            { revalidate: false }
+          );
+        } else {
+          console.error(e);
+        }
+      }
+    },
+    [jobExperiencesData, mutateJobExperiencesData]
+  );
+
+  const editJobExperienceHandler = useCallback(
+    async (data: JobExperienceForm) => {
+      if (type !== "edit") return;
+      if (!jobExperiencesData) return;
+
+      try {
+        const jobs = editJobExperience({
+          jobExperience: {
+            id: props.jobExperience.id,
+            ...formValueToExperience(data),
+          },
+        });
+        toastPromisify(jobs, {
+          loading: "Edit job experience.",
+          success: "Success!",
+        });
+        mutateJobExperiencesData(await jobs, {
+          revalidate: false,
+        });
+      } catch (e) {
+        if (!navigator.onLine) {
+          mutateJobExperiencesData(
+            {
+              ...jobExperiencesData,
+              jobExperiences:
+                jobExperiencesData.jobExperiences?.map((jobExperience) => {
+                  if (jobExperience.id === props.jobExperience.id) {
+                    return {
+                      id: jobExperience.id,
+                      ...formValueToExperience(data),
+                    };
+                  }
+                  return jobExperience;
+                }) ?? [],
+            },
+            { revalidate: false }
+          );
+          offlineToast();
+        } else {
+          console.error(e);
+        }
+      }
+    },
+    //@ts-ignore
+    [jobExperiencesData, mutateJobExperiencesData, props.jobExperience.id, type]
+  );
 
   const currentlyWorking = watch("isCurrent");
 

@@ -2,31 +2,44 @@ import { PencilAltIcon } from "@heroicons/react/solid";
 import Visibility from "components/visibility/Index";
 import { putProfileAbout } from "lib/api";
 import useAbout from "lib/hooks/useAbout";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Modal } from "../common/modal";
 import EditAbout from "./EditAbout";
-import { toast } from "react-hot-toast";
+import toastPromisify from "lib/toastPromisify";
+import offlineToast from "components/common/offlineToast";
 
 const Controls = () => {
   const [isOpen, setOpen] = useState(false);
   const { aboutData, mutateAboutData } = useAbout();
 
-  const handleVisibilityChange = async () => {
+  const handleVisibilityChange = useCallback(async () => {
     if (!aboutData) return;
-    const res = putProfileAbout({
-      aboutData: {
-        about: aboutData.about ?? "",
-        isPublic: !aboutData.isPublic,
-      },
-    });
-    toast.promise(res, {
-      loading: "Changing visibility...",
-      success: "Success!",
-      error: "Error changing visibility",
-    });
-    mutateAboutData(await res);
-    setOpen(false);
-  };
+    try {
+      const res = putProfileAbout({
+        aboutData: {
+          about: aboutData.about ?? "",
+          isPublic: !aboutData.isPublic,
+        },
+      });
+      toastPromisify(res, {
+        loading: "Changing visibility...",
+        success: "Success!",
+      });
+      mutateAboutData(await res);
+    } catch (e) {
+      if (!navigator.onLine) {
+        mutateAboutData(
+          { ...aboutData, isPublic: !aboutData.isPublic },
+          { revalidate: false }
+        );
+        offlineToast();
+      } else {
+        console.error(e);
+      }
+    } finally {
+      setOpen(false);
+    }
+  }, [aboutData, mutateAboutData]);
 
   return (
     <>

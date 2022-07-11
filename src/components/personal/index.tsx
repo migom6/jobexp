@@ -10,6 +10,9 @@ const Personal: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
     return <PersonalSkeleton />;
   }
 
+  if (!hasControls && !personalDetailsData.personalDetails) {
+    return <div className="hidden" />;
+  }
   // personalDetails wont be null because it has default in the schema
   const personalDetails = personalDetailsData.personalDetails;
 

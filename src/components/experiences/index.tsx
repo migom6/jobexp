@@ -9,6 +9,8 @@ const Experiences: FC<{ hasControls?: boolean }> = ({ hasControls = true }) => {
   const { jobExperiencesData } = useJobExperiences();
 
   if (!jobExperiencesData) return <ExperiencesSkeleton />;
+  if (!hasControls && (jobExperiencesData.jobExperiences?.length ?? 0) === 0)
+    return <div className="hidden" />;
 
   return (
     <section>

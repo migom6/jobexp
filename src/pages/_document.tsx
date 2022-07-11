@@ -39,12 +39,12 @@ export default class extends Document {
           />
           <link rel="manifest" href="/manifest.json" />
           <link rel="shortcut icon" href="/favicon.ico" />
-          <link
+          {/* <link
             rel="preload"
             href="/api/auth/me"
             as="fetch"
             crossOrigin="anonymous"
-          />
+          /> */}
         </Head>
         <body className="loading">
           <div id="modal" />
