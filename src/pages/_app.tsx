@@ -18,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ErrorBoundary>
         <SWRConfig
           value={{
+            refreshInterval: 2000,
             suspense: true,
             shouldRetryOnError: false,
             fetcher: fetchJson,
