@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import type { JobExperience } from "lib/types";
 import { FC } from "react";
 import ControlsExperienceCard from "./ControlsExperienceCard";
@@ -66,6 +65,9 @@ const ExperienceCard: FC<Props> = ({
           </div>
           <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full ">
             <Image
+              style={{ width: 56, height: 56 }}
+              objectFit="cover"
+              className="h-[56px] w-[56px] object-contain"
               src={
                 companyImageUrl.length > 0
                   ? companyImageUrl

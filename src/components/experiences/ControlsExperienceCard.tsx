@@ -53,12 +53,14 @@ const ControlsExperienceCard: FC<{ jobExperience: JobExperience }> = ({
     <>
       <div className="ml-auto flex gap-5">
         <button
+          aria-label="Edit job experience"
           className="h-fit rounded-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={() => setOpen((isOpen) => !isOpen)}
         >
           <PencilAltIcon className="h-5 w-5 text-neutral-500 hover:text-neutral-700" />
         </button>
         <button
+          aria-label="Delete job experience"
           className="h-fit rounded-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
           onClick={onDelete}
         >

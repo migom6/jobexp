@@ -23,7 +23,8 @@ const Header = () => {
       <Link href="/">
         <a>
           <Image
-            className="h-[50px] w-[50px] cursor-pointer"
+            style={{ width: 50, height: 50 }}
+            className="cursor-pointer"
             width={50}
             height={50}
             src="/logo.svg"
