@@ -5,10 +5,10 @@ import fetchJson from "lib/fetchJson";
 import { Toaster } from "react-hot-toast";
 
 import ErrorBoundary from "components/common/ErrorBoundary";
+import useServiceWorker from "lib/hooks/useServiceWorker";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  // reset keys for react-error-boundary
-
+  useServiceWorker();
   return (
     <>
       <meta
@@ -19,9 +19,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <SWRConfig
           value={{
             suspense: true,
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-            errorRetryCount: 0,
             shouldRetryOnError: false,
             fetcher: fetchJson,
           }}

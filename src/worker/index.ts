@@ -75,3 +75,14 @@ self.addEventListener("fetch", (event) => {
 
   event!.respondWith(bgSyncLogic() as Response | Promise<Response>);
 });
+
+self.addEventListener("message", (event) => {
+  if (event?.data === "replayRequests") {
+    queue.size().then((size) => {
+      if (size > 0) {
+        queue.replayRequests();
+        (event?.source as Client).postMessage("replayRequests");
+      }
+    });
+  }
+});
