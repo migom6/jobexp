@@ -144,8 +144,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
         }
       }
     },
-    //@ts-ignore
-    [jobExperiencesData, mutateJobExperiencesData, props.jobExperience.id, type]
+    [jobExperiencesData, mutateJobExperiencesData, props, type]
   );
 
   const currentlyWorking = watch("isCurrent");
