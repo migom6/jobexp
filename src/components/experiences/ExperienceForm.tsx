@@ -93,6 +93,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
             },
             { revalidate: false }
           );
+          offlineToast();
         } else {
           console.error(e);
         }
