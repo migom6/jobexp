@@ -15,18 +15,7 @@ import { editJobExperience, newJobExperience } from "lib/api";
 import useJobExperiences from "lib/hooks/useJobExperiences";
 import toastPromisify from "lib/toastPromisify";
 import offlineToast from "components/common/offlineToast";
-
-const defaultValues = {
-  startYear: 2022,
-  startMonth: "January",
-  endYear: 2022,
-  endMonth: "January",
-  company: "",
-  companyImageUrl: "",
-  description: "",
-  jobTitle: "",
-  isCurrent: false,
-};
+import { defaultValues, resolver } from "./helper";
 
 type Props1 = {
   type: "edit";
@@ -42,11 +31,17 @@ type Props2 = {
 
 export default function ExperienceForm(props: Props1 | Props2): ReactElement {
   const { setOpen, type } = props;
-  const { control, handleSubmit, watch } = useForm<JobExperienceForm>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<JobExperienceForm>({
     defaultValues:
       type === "add"
         ? defaultValues
         : experienceToFormValue(props.jobExperience),
+    resolver: resolver,
   });
   const { jobExperiencesData, mutateJobExperiencesData } = useJobExperiences();
 
@@ -176,10 +171,9 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
       <Controller
         name="companyName"
         control={control}
-        rules={{ required: true }}
         render={({
           field: { name, onBlur, onChange, value },
-          fieldState: { isTouched, error },
+          fieldState: { error },
         }) => (
           <div>
             <Input
@@ -191,17 +185,16 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
               onBlur={onBlur}
               onChange={onChange}
             />
-            {error && <ErrorText>required</ErrorText>}
+            {error && <ErrorText>{error.message}</ErrorText>}
           </div>
         )}
       />
       <Controller
         name="jobTitle"
         control={control}
-        rules={{ required: true }}
         render={({
           field: { name, onBlur, onChange, value },
-          fieldState: { isTouched, error },
+          fieldState: { error },
         }) => (
           <div>
             <Input
@@ -213,7 +206,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
               onBlur={onBlur}
               onChange={onChange}
             />
-            {error && <ErrorText>required</ErrorText>}
+            {error && <ErrorText>{error.message}</ErrorText>}
           </div>
         )}
       />
@@ -223,7 +216,6 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
           <Controller
             name="startMonth"
             control={control}
-            rules={{ required: true }}
             render={({ field: { name, onBlur, onChange, value } }) => (
               <Select
                 value={value}
@@ -240,7 +232,6 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
           <Controller
             name="startYear"
             control={control}
-            rules={{ required: true }}
             render={({ field: { name, onBlur, onChange, value } }) => (
               <Select
                 value={value}
@@ -262,7 +253,6 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
           <Controller
             name="endMonth"
             control={control}
-            rules={{ required: true }}
             render={({ field: { name, onBlur, onChange, value } }) => (
               <Select
                 disabled={currentlyWorking}
@@ -280,7 +270,6 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
           <Controller
             name="endYear"
             control={control}
-            rules={{ required: true }}
             render={({ field: { name, onBlur, onChange, value } }) => (
               <Select
                 disabled={currentlyWorking}
@@ -312,6 +301,7 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
           />
           <label className="text-sm">Currently working</label>
         </div>
+        {errors.endMonth && <ErrorText>{errors.endMonth.message}</ErrorText>}
       </div>
       <Controller
         name="description"

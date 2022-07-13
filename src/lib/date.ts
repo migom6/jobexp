@@ -34,3 +34,11 @@ export const convertToISO = ({
   const monthIndex = months.indexOf(month);
   return new Date(year, monthIndex, 1).toISOString();
 };
+
+// return false if the start date is greater than endDate
+export const validEndDate = (startDate: Date, endDate: Date) => {
+  if (startDate.getTime() > endDate.getTime()) {
+    return false;
+  }
+  return true;
+};
