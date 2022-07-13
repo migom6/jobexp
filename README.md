@@ -16,6 +16,10 @@ npm i
 
 Update the `DATABASE_URL` in `.env` file to your own postgres connection url. (current one is fake)
 
+```bash
+cp .env.example .env
+```
+
 Execute the initial DB migrations
 
 ```bash
