@@ -50,8 +50,6 @@ export default function ExperienceForm(props: Props1 | Props2): ReactElement {
   });
   const { jobExperiencesData, mutateJobExperiencesData } = useJobExperiences();
 
-  console.log(jobExperiencesData);
-
   const onSubmit: SubmitHandler<JobExperienceForm> = async (data) => {
     try {
       if (type === "add") {

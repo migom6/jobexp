@@ -23,7 +23,6 @@ const Header = () => {
       <Link href="/">
         <a>
           <Image
-            style={{ width: 50, height: 50 }}
             className="cursor-pointer"
             width={50}
             height={50}

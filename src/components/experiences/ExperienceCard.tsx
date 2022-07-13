@@ -65,7 +65,6 @@ const ExperienceCard: FC<Props> = ({
           </div>
           <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full ">
             <Image
-              style={{ width: 56, height: 56 }}
               objectFit="cover"
               className="h-[56px] w-[56px] object-contain"
               src={
