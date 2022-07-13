@@ -1,7 +1,5 @@
-import { jobExperiencesClientToDB, profileDBtoClient } from "lib/parsers";
-import { Profile, JobExperience } from "lib/types";
+import { Profile } from "lib/types";
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "server/prisma";
 import { withIronSessionApiRoute } from "iron-session/next";
 import { sessionOptions } from "server/session";
 import {

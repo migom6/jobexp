@@ -19,6 +19,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <SWRConfig
           value={{
             refreshInterval: 2000,
+            revalidateOnMount: false,
             suspense: true,
             shouldRetryOnError: false,
             fetcher: fetchJson,
