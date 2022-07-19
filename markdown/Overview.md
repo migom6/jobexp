@@ -52,7 +52,7 @@ Tailwind is tiny, **performant**, supports purging and **increases productivity*
 
 ### Filesystem
 
-![Exact file structure can be found in the [repository](https://github.com/migom6/madhurjya-pegu-frontend-01Jul2022)](/overview/file_structure.png)
+![Exact file structure can be found in the [repository](https://github.com/migom6/madhurjya-pegu-frontend-01Jul2022)](/markdown/file_structure.png)
 
 Exact file structure can be found in the [repository](https://github.com/migom6/madhurjya-pegu-frontend-01Jul2022)
 
@@ -87,7 +87,7 @@ Keeping it short as this was a frontend assignment, I have used **Postgres, serv
 
 ## 🚀 Optimization
 
-![performance.png](/overview/performance.png)
+![performance.png](/markdown/performance.png)
 
 Initially lighthouse score were quite low but now have managed a good score by optimizing the web app. Some of key points are discussed below.
 
