@@ -4,7 +4,7 @@ JobExp : Assignment given by Glints
 
 https://jobexp.vercel.app
 
-👉[Please checkout this article to know more about the features and approach.](https://www.notion.so/migom6/Job-Experiences-34dc9f9d1be343c58cf054f5bab11ed9)
+👉[Please checkout this article to know more about the features and approach.](https://github.com/migom6/madhurjya-pegu-frontend-01Jul2022/blob/main/markdown/Overview.md)
 
 ## Installation
 
